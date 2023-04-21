@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/notesFragment"
+        android:title="Notes"
+        android:icon="@drawable/ic_notes">
+    </item>
+
+    <item android:id="@+id/timerFragment"
+        android:title="Timer"
+        android:icon="@drawable/ic_timer"/>
+
+    <item android:id="@+id/tasksFragment"
+        android:title="Tasks"
+        android:icon="@drawable/ic_task"/>
+
+</menu>
