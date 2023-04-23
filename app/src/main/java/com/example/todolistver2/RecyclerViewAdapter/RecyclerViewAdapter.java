@@ -36,6 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.noteId.setText(String.valueOf(position + 1));
         holder.noteDescription.setText(notes.get(position).getDescription());
+        holder.noteDate.setText(Note.convertLocalDateTimeToString(notes.get(position).getLocalDateTime()));
     }
 
     @Override
@@ -45,12 +46,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        // TODO Доделать noteDateTime, не забудь также добавить view в item_recyclerView
-        TextView noteDescription, noteDateTime, noteId;
+        TextView noteDescription, noteDate, noteId;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             noteId = itemView.findViewById(R.id.note_id_number);
             noteDescription = itemView.findViewById(R.id.note_id_description);
+            noteDate = itemView.findViewById(R.id.note_id_date);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

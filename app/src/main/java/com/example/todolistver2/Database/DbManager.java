@@ -6,11 +6,11 @@ import com.example.todolistver2.Models.Note;
 
 public class DbManager {
     private Context context;
-    private DbHelper dbHelper;
+   // private DbHelper dbHelper;
 
     public DbManager(Context context){
         this.context = context;
-        dbHelper = new DbHelper(this.context);
+       // dbHelper = new DbHelper(this.context);
     }
 
     //-----------------------------------#TABLE NOTES#----------------------------------------------

@@ -7,19 +7,20 @@
     android:id="@+id/item_recycler_view_main_layout">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
+        android:layout_width="190dp"
         android:layout_height="100dp"
-        android:layout_margin="15dp"
+        android:layout_margin="4dp"
         android:backgroundTint="@color/white"
         app:cardCornerRadius="20dp"
         android:elevation="10dp"
         app:cardElevation="10dp"
-        app:cardPreventCornerOverlap="false">
+        app:cardPreventCornerOverlap="false"
+        android:layout_gravity="center">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/note_id_number"
@@ -27,9 +28,8 @@
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:textColor="#000"
-                android:textSize="25sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/note_id_description"/>
@@ -49,14 +49,26 @@
             <TextView
                 android:id="@+id/note_id_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:textSize="12sp"
+                android:layout_height="59dp"
+                android:layout_marginStart="16dp"
                 android:text="Decription"
-                app:layout_constraintStart_toEndOf="@+id/note_id_number"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/note_id_number"
+                app:layout_constraintStart_toEndOf="@+id/note_id_number"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/note_id_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/note_id_description"
+                android:layout_margin="5dp"
+                android:text="20-04-23 17:59:59"
+                android:textSize="10sp"
+
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
