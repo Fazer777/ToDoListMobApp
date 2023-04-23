@@ -1,24 +1,29 @@
-package com.example.todolistver2;
+package com.example.todolistver2.Activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.todolistver2.Models.Note;
+import com.example.todolistver2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+
 
     private BottomNavigationView bottomNavBar;
     private NavController navController;
     private Toolbar toolbar;
 
+    List<Note> notes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +31,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initElements();
 
-
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavBar, navController);
         setSupportActionBar(toolbar);
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void initElements() {
@@ -53,4 +56,13 @@ public class MainActivity extends AppCompatActivity {
         //Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
         return navController.navigateUp()|| super.onSupportNavigateUp();
     }
+
+//    public interface ISelectedBundle{
+//        void onBundleSelect(Bundle bundle);
+//    }
+//
+//    public void setOnBundleSelected(ISelectedBundle selectedBundle){
+//        this.selectedBundle = selectedBundle;
+//    }
+
 }

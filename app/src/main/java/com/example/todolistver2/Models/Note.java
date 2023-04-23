@@ -17,7 +17,7 @@ public class Note implements Serializable {
     private String category;
 
     //TODO Можно добавить поле "цвет заметки", который зависит от категории
-    //private int colorNote;
+    private int colorNote;
 
     public Note() {
 

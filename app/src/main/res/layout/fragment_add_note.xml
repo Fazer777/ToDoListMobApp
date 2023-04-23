@@ -20,11 +20,11 @@
 <!--    app:layout_constraintTop_toBottomOf="@id/add_note_toolbar"-->
 <!--        />-->
 
+
     <EditText
-        android:id="@+id/add_note_id_description"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
