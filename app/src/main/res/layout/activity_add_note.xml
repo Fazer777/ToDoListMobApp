@@ -19,25 +19,29 @@
         />
     <Spinner
         android:id="@+id/add_note_id_spinner"
-        android:layout_width="180dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/add_note_id_date_time_view"
+        app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
+        app:layout_constraintEnd_toStartOf="@id/add_note_id_date_time_view"
         android:contentDescription="Choose category of note"
-        android:background="@color/blue"
+        android:spinnerMode="dropdown"
+        style="@style/Widget.AppCompat.DropDownItem.Spinner"
         />
     <TextView
         android:id="@+id/add_note_id_date_time_view"
-        android:layout_width="180dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
+        android:textColor="#939393"
         app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
         app:layout_constraintLeft_toRightOf="@id/add_note_id_spinner"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@color/lightPink"
         android:gravity="center"
+        android:textSize="14sp"
+        android:text="20.04.23 18:00:00"
         />
+
 
     <EditText
         android:id="@+id/add_note_id_description"
