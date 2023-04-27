@@ -1,29 +1,24 @@
 package com.example.todolistver2.Models;
 
-import android.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.todolistver2.Constants.Constants;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Note implements Serializable {
 
     private String description;
     private LocalDateTime noteDateTime;
-    private String category;
+    private Category category;
 
-    //TODO Можно добавить поле "цвет заметки", который зависит от категории
-    private int colorNote;
 
     public Note() {
 
     }
 
-   public Note(String description, LocalDateTime noteDateTime, String category){
+   public Note( String description, LocalDateTime noteDateTime, Category category){
         this.description = description;
         this.noteDateTime = noteDateTime;
         this.category = category;
@@ -46,11 +41,12 @@ public class Note implements Serializable {
         this.noteDateTime = noteDateTime;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -77,8 +73,9 @@ public class Note implements Serializable {
         catch (Exception ex){
             ex.printStackTrace();
             Log.d("StrToLDT", ex.getMessage());
+
         }
         return localDateTime;
-
     }
+
 }
