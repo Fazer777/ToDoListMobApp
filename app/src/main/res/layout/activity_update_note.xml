@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/upd_note_id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/upd_note_id_spinner"
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+        app:menu="@menu/add_note_toolbar_menu"
+        android:background="@color/orange"
+        />
+    <Spinner
+        android:id="@+id/upd_note_id_spinner"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upd_note_id_toolbar"
+        app:layout_constraintEnd_toStartOf="@id/upd_note_id_date_time_view"
+        android:contentDescription="Choose category of note"
+        android:spinnerMode="dropdown"
+        style="@style/Widget.AppCompat.DropDownItem.Spinner"
+        />
+    <TextView
+        android:id="@+id/upd_note_id_date_time_view"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textColor="#939393"
+        app:layout_constraintTop_toBottomOf="@id/upd_note_id_toolbar"
+        app:layout_constraintLeft_toRightOf="@id/upd_note_id_spinner"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:text="20.04.23 18:00:00"
+        />
+
+
+    <EditText
+        android:id="@+id/upd_note_id_description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:importantForAutofill="no"
+        android:background="@android:color/transparent"
+        android:inputType="textMultiLine"
+        android:hint="@string/add_note_hint_description"
+        android:gravity="top"
+        android:padding="5dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
