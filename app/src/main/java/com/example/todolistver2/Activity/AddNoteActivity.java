@@ -4,19 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.todolistver2.Adapters.CategoryAdapter;
+import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.Models.Note;
 import com.example.todolistver2.R;
+import com.example.todolistver2.Models.Category;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,26 +33,34 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
     Menu addNoteMenu;
     EditText etDescriptionNote;
     TextView tvDateTime;
+    Spinner spCategory;
+
     DbManager dbManager;
+    CategoryAdapter categoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         initLayoutElements();
+        dbManager = new DbManager(AddNoteActivity.this);
+        categoryAdapter = new CategoryAdapter(AddNoteActivity.this);
 
-        dbManager = new DbManager(this);
         setSupportActionBar(toolbar);
 
         tvDateTime.setText(Note.convertLocalDateTimeToString(
                 LocalDateTime.now(ZoneId.of("Europe/Moscow"))));
 
+
+
+        spCategory.setAdapter(categoryAdapter);
     }
 
     private void initLayoutElements() {
         toolbar = findViewById(R.id.add_note_id_toolbar);
         etDescriptionNote = findViewById(R.id.add_note_id_description);
         tvDateTime = findViewById(R.id.add_note_id_date_time_view);
+        spCategory = findViewById(R.id.add_note_id_spinner);
         etDescriptionNote.addTextChangedListener(this);
     }
 
@@ -65,8 +79,6 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_add_note_toolbar_create){
-
-            //Toast.makeText(this, "Good!", Toast.LENGTH_SHORT).show();
             createNote();
         }
         return super.onOptionsItemSelected(item);
@@ -74,8 +86,16 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
 
     // Метод создания новой заметки
     private void createNote() {
-        Toast.makeText(this, "Testd\nTestG\n" + Note.convertLocalDateTimeToString(
-                LocalDateTime.now(ZoneId.of("Europe/Moscow"))), Toast.LENGTH_SHORT).show();
+        Note note = new Note();
+        note.setDescription(etDescriptionNote.getText().toString());
+        Category category = (Category) spCategory.getSelectedItem();
+        note.setCategory(category);
+        note.setLocalDateTime(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
+        dbManager.addNoteDatabase(note);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.INTENT_CREATE_NOTE_KEY, note);
+        setResult(Constants.NOTE_CREATE_ACTION, intent);
+        finish();
     }
 
     @Override
