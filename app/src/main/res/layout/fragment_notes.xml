@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/lightBlue"/>
+        android:background="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/notes_act_btn_add"

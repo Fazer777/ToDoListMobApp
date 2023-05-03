@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_category_iv_icon"
+        android:layout_height="28dp"
+        android:layout_width="28dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_category_background"
+        android:foreground="@drawable/ic_category_foreground"
+        android:src="@drawable/ic_category_background"
+        android:contentDescription="Icon category"
+        app:tint="@color/lightGreen"
+        app:shapeAppearanceOverlay="@style/ShapeableImageView.Round"
+        />
+
+    <TextView
+        android:id="@+id/item_category_tv_name"
+        android:textSize="13sp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        />
+</LinearLayout>

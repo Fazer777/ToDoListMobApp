@@ -10,7 +10,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DATABASE_NAME = "ToDoList.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
 
 
@@ -21,13 +21,14 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TableNotes.CREATE_TABLE_NOTES);
+        db.execSQL(TableTimerTasks.CREATE_TABLE_TIMER_TASKS);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(TableNotes.DELETE_TABLE_NOTES);
+        db.execSQL(TableTimerTasks.DELETE_TABLE_TIMER_TASKS);
         onCreate(db);
-
     }
 }

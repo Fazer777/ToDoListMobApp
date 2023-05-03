@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/FilterByDate"
+        android:icon="@drawable/ic_filter_list"
+        android:title="filter"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item android:id="@+id/showAll"
+                android:title="Показать все"/>
+
+            <item android:id="@+id/pickDate"
+                android:title="Выбрать дату"/>
+        </menu>
+
+    </item>
+</menu>

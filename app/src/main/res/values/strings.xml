@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoList(Ver2)</string>
+    <string name="app_name">ToDoList</string>
     <string name="hello_blank_fragment1">This is Fragment 1</string>
     <string name="hello_blank_fragment2">This is Fragment 2</string>
     <string name="hello_blank_fragment3">This is Timer</string>
