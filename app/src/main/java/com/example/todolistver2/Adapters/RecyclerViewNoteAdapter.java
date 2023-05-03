@@ -10,12 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Models.Note;
 import com.example.todolistver2.R;
 
 import java.util.List;
 
-public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNoteAdapter.MyViewHolder>{
+public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNoteAdapter.MyViewHolder> {
 
     private Context context;
     private List<Note> notes;
@@ -37,9 +38,8 @@ public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewNoteAdapter.MyViewHolder holder, int position) {
-        holder.noteId.setText(String.valueOf(position + 1));
         holder.noteDescription.setText(notes.get(position).getDescription());
-        holder.noteDate.setText(Note.convertLocalDateTimeToString(notes.get(position).getLocalDateTime()));
+        holder.noteDate.setText(Constants.convertLocalDateTimeToString(notes.get(position).getLocalDateTime()));
         holder.cardView.setCardBackgroundColor(notes.get(position).getCategory().getColor());
     }
 
@@ -50,16 +50,13 @@ public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNo
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView noteDescription, noteDate, noteId;
+        TextView noteDescription, noteDate;
         CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            noteId = itemView.findViewById(R.id.note_id_number);
             noteDescription = itemView.findViewById(R.id.note_id_description);
             noteDate = itemView.findViewById(R.id.note_id_date);
             cardView = itemView.findViewById(R.id.item_note_card_view);
-
-
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
