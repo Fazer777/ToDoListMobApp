@@ -44,8 +44,6 @@ public class NotesFragment extends Fragment {
     List<Note> notes;
     DbManager dbManager;
     Context context;
-//    MenuHost menuHost;
-//    Menu toolbarMenu;
     private final ActivityResultLauncher<Intent> createNote = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         result -> {
@@ -160,7 +158,7 @@ public class NotesFragment extends Fragment {
             public void onItemLongClick(View itemView, int position) {
                 Note note = notes.get(position);
                 CardView view1 = itemView.findViewById(R.id.item_note_card_view);
-                view1.setCardBackgroundColor(getResources().getColor(R.color.teal_700));
+                view1.setCardBackgroundColor(getResources().getColor(R.color.teal_700, context.getTheme()));
                 new AlertDialog.Builder(requireActivity())
                         .setTitle("Do you want to remove this note ?")
                         .setNegativeButton("Yes", new DialogInterface.OnClickListener() {
@@ -180,16 +178,11 @@ public class NotesFragment extends Fragment {
                                 dialogInterface.dismiss();
 
                             }
-                        }).create().show();
+                        }).setCancelable(false).create().show();
 
             }
         });
     }
-
-//    private void showDeleteIcon(boolean show) {
-//        toolbarMenu.findItem(R.id.menu_notes_fragment_toolbar_delete).setVisible(show);
-//    }
-
 
     @Override
     public void onStart() {
