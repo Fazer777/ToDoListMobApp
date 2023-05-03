@@ -48,7 +48,7 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
 
         setSupportActionBar(toolbar);
 
-        tvDateTime.setText(Note.convertLocalDateTimeToString(
+        tvDateTime.setText(Constants.convertLocalDateTimeToString(
                 LocalDateTime.now(ZoneId.of("Europe/Moscow"))));
 
 
