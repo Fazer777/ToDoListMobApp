@@ -2,13 +2,10 @@ package com.example.todolistver2.Activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -95,8 +92,7 @@ public class AddTimerTaskActivity extends AppCompatActivity implements ColorPick
         switch (dialogId){
             case R.id.add_upd_timer_task_color:
                 try {
-                    //TODO Change name of resource file
-                    Drawable mDrawable = ContextCompat.getDrawable(AddTimerTaskActivity.this, R.drawable.background_text_view_test);
+                    Drawable mDrawable = ContextCompat.getDrawable(AddTimerTaskActivity.this, R.drawable.background_white_text_view);
                     mDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
                     tvTaskColor.setBackground(mDrawable);
                     timerTaskColor = color;
