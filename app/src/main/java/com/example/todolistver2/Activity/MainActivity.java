@@ -7,6 +7,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.todolistver2.Database.DbManager;
@@ -14,6 +16,7 @@ import com.example.todolistver2.R;
 import com.example.todolistver2.fragments.Notes.NotesFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +43,15 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavBar, navController);
-        NavigationUI.setupActionBarWithNavController(MainActivity.this, navController);
+
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        }
+        catch (Exception ex){
+            Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        //NavigationUI.setupActionBarWithNavController(MainActivity.this, navController);
 
         //dbManager = new DbManager(MainActivity.this);
         loadDataFromDatabase();
@@ -85,12 +96,18 @@ public class MainActivity extends AppCompatActivity {
 //        this.selectedBundle = selectedBundle;
 //    }
 
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        super.onBackPressed();
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            return false;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 }
