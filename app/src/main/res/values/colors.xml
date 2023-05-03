@@ -13,7 +13,8 @@
     <color name="lightPink">#FDDBFC</color>
     <color name="blue">#0083C2</color>
     <color name="orange">#FFDA69</color>
-    <color name="test">#FFFFFF</color>
-    <color name="color_icon_category_default">#EBEBEB</color>
+    <color name="test">#FFB0B0</color>
+    <color name="red">#FF8282</color>
+    <color name="color_icon_category_default">#C2C2C2</color>
 
 </resources>
