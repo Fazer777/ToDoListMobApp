@@ -60,7 +60,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 }
                 Note note = (Note) intent.getSerializableExtra(Constants.INTENT_UPDATE_NOTE_KEY);
                 etDescriptionNote.setText(note.getDescription());
-                tvDateTime.setText(Note.convertLocalDateTimeToString(note.getLocalDateTime()));
+                tvDateTime.setText(Constants.convertLocalDateTimeToString(note.getLocalDateTime()));
                 spCategory.setSelection(categoryAdapter.getItemId(note.getCategory().getName()));
             }
             catch (Exception ex) {
