@@ -50,32 +50,5 @@ public class Note implements Serializable {
         this.category = category;
     }
 
-    //TODO Сделать методы конвертации даты в строку и обратно
-
-    public static String convertLocalDateTimeToString(LocalDateTime localDatetime){
-        String dateTimeString="";
-        try{
-            dateTimeString = localDatetime.format(Constants.format_dd_MM_YYYY_HH_mm_ss);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            Log.d("LDTtoStr", ex.getMessage());
-            dateTimeString="";
-        }
-        return dateTimeString;
-    }
-
-    public static LocalDateTime convertStringToLocalDate(String strDateTime){
-        LocalDateTime localDateTime = null;
-        try{
-            localDateTime = LocalDateTime.parse(strDateTime, Constants.format_dd_MM_YYYY_HH_mm_ss);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            Log.d("StrToLDT", ex.getMessage());
-
-        }
-        return localDateTime;
-    }
 
 }
