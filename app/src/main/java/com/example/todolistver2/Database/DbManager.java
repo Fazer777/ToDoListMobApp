@@ -10,7 +10,9 @@ import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Models.Note;
 import com.example.todolistver2.Models.Category;
 import com.example.todolistver2.Models.Task;
+import com.example.todolistver2.Models.TimerTask;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -92,7 +94,6 @@ public class DbManager {
         finally {
             dbHelper.close();
         }
-
     }
 
     // Delete note from database
@@ -136,14 +137,14 @@ public class DbManager {
 
     //-----------------------------------#TABLE TIMER_TASKS#----------------------------------------
 
-    public void addTimerTaskDatabase(Task task){
-        if (task != null){
+    public void addTimerTaskDatabase(TimerTask timerTask){
+        if (timerTask != null){
             ContentValues cv = new ContentValues();
-            cv.put(TableTimerTasks.TIMER_TASK_NAME, task.getName());
-            cv.put(TableTimerTasks.TIMER_TASK_DATETIME, Constants.convertLocalDateTimeToString(task.getDateTime()));
-            String hexColor = String.format("#%06X", (0xFFFFFF & task.getColorTask()));
+            cv.put(TableTimerTasks.TIMER_TASK_NAME, timerTask.getName());
+            cv.put(TableTimerTasks.TIMER_TASK_DATETIME, Constants.convertLocalDateTimeToString(timerTask.getDateTime()));
+            String hexColor = String.format("#%06X", (0xFFFFFF & timerTask.getColorTask()));
             cv.put(TableTimerTasks.TIMER_TASK_COLOR, hexColor);
-            cv.put(TableTimerTasks.TIMER_TASK_TIME, task.getTime().format(Constants.timeFormat_HH_mm_ss));
+            cv.put(TableTimerTasks.TIMER_TASK_TIME, timerTask.getTime().format(Constants.timeFormat_HH_mm_ss));
 
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableTimerTasks.TABLE_NAME, null, cv);
@@ -167,11 +168,11 @@ public class DbManager {
         }
     }
 
-    public void updateTimerTaskDatabase(int id, Task task){
+    public void updateTimerTaskDatabase(int id, TimerTask timerTask){
         ContentValues cv = new ContentValues();
-        cv.put(TableTimerTasks.TIMER_TASK_NAME, task.getName());
-        cv.put(TableTimerTasks.TIMER_TASK_DATETIME, task.getDateTime().format(Constants.format_dd_MM_YYYY_HH_mm_ss));
-        String hexColor = String.format("#%06X", (0xFFFFFF & task.getColorTask()));
+        cv.put(TableTimerTasks.TIMER_TASK_NAME, timerTask.getName());
+        cv.put(TableTimerTasks.TIMER_TASK_DATETIME, timerTask.getDateTime().format(Constants.format_dd_MM_YYYY_HH_mm_ss));
+        String hexColor = String.format("#%06X", (0xFFFFFF & timerTask.getColorTask()));
         cv.put(TableTimerTasks.TIMER_TASK_COLOR, hexColor);
 
         String selection = TableTimerTasks.ID + " = ?";
@@ -239,14 +240,14 @@ public class DbManager {
     }
 
     // TODO may be will write try-catch???
-    public List<Task> getAllTimerTasksDatabase(){
+    public List<TimerTask> getAllTimerTasksDatabase(){
 
-        List<Task> allTasks = new ArrayList<>();
+        List<TimerTask> allTimerTasks = new ArrayList<>();
 
         String sortOrder =
                 TableTimerTasks.TIMER_TASK_DATETIME + " DESC";
 
-        Cursor cursor = dbHelper.getWritableDatabase().query(
+        Cursor cursor = dbHelper.getReadableDatabase().query(
                 TableTimerTasks.TABLE_NAME,   // The table to query
                 null,             // The array of columns to return (pass null to get all)
                 null,              // The columns for the WHERE clause
@@ -257,7 +258,7 @@ public class DbManager {
         );
 
         while (cursor.moveToNext()){
-            Task timerTask = new Task();
+            TimerTask timerTask = new TimerTask();
             timerTask.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_NAME)));
 
             LocalDateTime dateTime = Constants.convertStringToLocalDate(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_DATETIME)));
@@ -266,17 +267,138 @@ public class DbManager {
             timerTask.setColorTask(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_COLOR))));
             timerTask.setTime(LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_TIME)), Constants.timeFormat_HH_mm_ss));
 
-            allTasks.add(timerTask);
+            allTimerTasks.add(timerTask);
         }
         cursor.close();
         dbHelper.close();
 
-        return allTasks;
+        return allTimerTasks;
     }
 
 
     //-----------------------------------#TABLE TASKS#----------------------------------------------
+    public void addTaskDatabase(Task task){
+        if (task != null){
+            ContentValues cv = new ContentValues();
+            cv.put(TableTasks.TASK_NAME, task.getName());
+            cv.put(TableTasks.TASK_DESCRIPTION, task.getDescription());
+            cv.put(TableTasks.TASK_DATE, task.getDate().format(Constants.format_dd_MM_YYYY));
+            cv.put(TableTasks.TASK_COMPLETED, booleanToInt(task.getCompleted()));
+            String hexColor = String.format("#%06X", (0xFFFFFF & task.getColor()));
+            cv.put(TableTasks.TASK_COLOR, hexColor);
 
+            try{
+                long result = dbHelper.getWritableDatabase().insert(TableTasks.TABLE_NAME, null, cv);
+                if (result == -1) {
+                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                }
+            }
+            catch (Exception ex){
+                Toast.makeText(context, "add_task_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            finally {
+                dbHelper.close();
+            }
+        }
+        else{
+            Toast.makeText(context, "task is null", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    public void updateTaskDataBase(int id, Task task){
+        ContentValues cv = new ContentValues();
+        cv.put(TableTasks.ID, id);
+        cv.put(TableTasks.TASK_NAME, task.getName());
+        cv.put(TableTasks.TASK_DESCRIPTION, task.getDescription());
+        cv.put(TableTasks.TASK_DATE, task.getDate().format(Constants.format_dd_MM_YYYY));
+        cv.put(TableTasks.TASK_COMPLETED, booleanToInt(task.getCompleted()));
+        String hexColor = String.format("#%06X", (0xFFFFFF & task.getColor()));
+        cv.put(TableTasks.TASK_COLOR, hexColor);
 
+        String selection = TableTasks.ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        try{
+            int count = dbHelper.getWritableDatabase().update(
+                    TableTasks.TABLE_NAME,
+                    cv,
+                    selection,
+                    selectionArgs);
+
+            if (count == -1){
+                Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception ex){
+            Toast.makeText(context, "update_task_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        finally {
+            dbHelper.close();
+        }
+    }
+
+    public void deleteTaskDatabase(int id){
+        String whereClause = TableTasks.ID + "= ?";
+        String[] whereArgs = { String.valueOf(id) };
+        try{
+            dbHelper.getWritableDatabase().delete(TableTasks.TABLE_NAME, whereClause, whereArgs);
+        }
+        catch (Exception ex){
+            Toast.makeText(context, "delete_task_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        finally {
+            dbHelper.close();
+        }
+    }
+
+    public List<Task> getAllTasksDatabase(){
+        List<Task> allTasks = new ArrayList<>();
+
+        String sortOrder =
+                TableTasks.TASK_DATE + " DESC";
+        Cursor cursor = dbHelper.getReadableDatabase().query(
+                TableTasks.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+
+        while(cursor.moveToNext()){
+            Task task = new Task();
+            task.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_NAME)));
+            task.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_DESCRIPTION)));
+            task.setDate(LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_DATE)), Constants.format_dd_MM_YYYY));
+            task.setColor(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_COLOR))));
+            int i = cursor.getInt(cursor.getColumnIndexOrThrow(TableTasks.TASK_COMPLETED));
+            task.setCompleted(intToBoolean(i));
+            allTasks.add(task);
+        }
+
+        cursor.close();
+        dbHelper.close();
+
+        return  allTasks;
+    }
+
+    private Boolean intToBoolean(int num){
+        return num > 0;
+    }
+
+    private int booleanToInt(Boolean bool){
+        if (bool){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
 }
