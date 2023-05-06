@@ -24,6 +24,7 @@ import com.example.todolistver2.R;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
 
 public class UpdateNoteActivity extends AppCompatActivity {
 
@@ -46,6 +47,12 @@ public class UpdateNoteActivity extends AppCompatActivity {
         categoryAdapter = new CategoryAdapter(UpdateNoteActivity.this);
         spCategory.setAdapter(categoryAdapter);
         setSupportActionBar(toolbar);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        }
+        catch (Exception ex){
+            Toast.makeText(UpdateNoteActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
         getIntentAndSetData();
 
     }
