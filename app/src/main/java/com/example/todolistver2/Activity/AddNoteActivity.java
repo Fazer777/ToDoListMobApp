@@ -26,6 +26,7 @@ import com.example.todolistver2.Models.Category;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
 
 public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
 
@@ -45,8 +46,13 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
         initLayoutElements();
         dbManager = new DbManager(AddNoteActivity.this);
         categoryAdapter = new CategoryAdapter(AddNoteActivity.this);
-
         setSupportActionBar(toolbar);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        }
+        catch (Exception ex){
+            Toast.makeText(AddNoteActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         tvDateTime.setText(Constants.convertLocalDateTimeToString(
                 LocalDateTime.now(ZoneId.of("Europe/Moscow"))));
