@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
-import com.example.todolistver2.Models.Task;
+import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class UpdateTimerTaskActivity  extends AppCompatActivity implements ColorPickerDialogListener {
@@ -37,7 +38,7 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
     Button btnUpdateTask;
     int timerTaskColor;
     int timerTaskIndex;
-    Task selectedTask;
+    TimerTask selectedTimerTask;
     Calendar calendar;
     DbManager dbManager;
 
@@ -51,9 +52,7 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
         btnUpdateTask = findViewById(R.id.add_upd_timer_task_btn_add_upd);
         dbManager = new DbManager(UpdateTimerTaskActivity.this);
         calendar =Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Moscow")));
-
         btnUpdateTask.setText("Изменить");
-
         try {
             getIntentAndSetData();
         }
@@ -78,14 +77,14 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
     }
 
     private void updateTask() {
-        selectedTask.setName(etTaskName.getText().toString());
-        selectedTask.setDateTime(LocalDateTime.of(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY), LocalTime.now()));
-        selectedTask.setColorTask(timerTaskColor);
-        dbManager.updateTimerTaskDatabase(timerTaskIndex + 1, selectedTask);
+        selectedTimerTask.setName(etTaskName.getText().toString());
+        selectedTimerTask.setDateTime(LocalDateTime.of(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY), LocalTime.now()));
+        selectedTimerTask.setColorTask(timerTaskColor);
+        dbManager.updateTimerTaskDatabase(timerTaskIndex + 1, selectedTimerTask);
 
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_INDEX_KEY, timerTaskIndex);
-        intent.putExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY, selectedTask);
+        intent.putExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY, selectedTimerTask);
         setResult(Constants.TIMER_TASK_UPDATE_ACTION, intent);
         finish();
     }
@@ -98,10 +97,10 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
             if (timerTaskIndex == Constants.INTENT_DEFAULT_VALUE) {
                 throw new Exception("Note's index is below zero");
             }
-            selectedTask = (Task) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
-            etTaskName.setText(selectedTask.getName());
-            setBackgroundColorTask(selectedTask.getColorTask());
-            tvTaskDate.setText(selectedTask.getDateTime().format(Constants.format_dd_MM_YYYY));
+            selectedTimerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
+            etTaskName.setText(selectedTimerTask.getName());
+            setBackgroundColorTask(selectedTimerTask.getColorTask());
+            tvTaskDate.setText(selectedTimerTask.getDateTime().format(Constants.format_dd_MM_YYYY));
         }
     }
 
@@ -109,14 +108,8 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
     public void onColorSelected(int dialogId, int color) {
         if (dialogId == R.id.add_upd_timer_task_color) {
             try {
-                //TODO Change name of resource file
                 setBackgroundColorTask(color);
-//                    Drawable mDrawable = ContextCompat.getDrawable(UpdateTimerTaskActivity.this, R.drawable.background_text_view_test);
-//                    assert mDrawable != null;
-//                    mDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
-//                    tvTaskColor.setBackground(mDrawable);
                 timerTaskColor = color;
-
             } catch (Exception ex) {
                 Toast.makeText(UpdateTimerTaskActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
             }

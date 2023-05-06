@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 
-import com.example.todolistver2.Models.Task;
+import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
@@ -72,8 +72,9 @@ public class AddTimerTaskActivity extends AppCompatActivity implements ColorPick
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
+
         btnAddTimerTask.setOnClickListener(view -> {
-            Task timerTask = new Task();
+            TimerTask timerTask = new TimerTask();
             timerTask.setName(etTaskName.getText().toString());
             timerTask.setTime(LocalTime.of(0,0,0));
             LocalDateTime dateTime = LocalDateTime.of(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY), LocalTime.now());

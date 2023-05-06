@@ -4,11 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -17,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,24 +28,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.todolistver2.Activity.AddNoteActivity;
 import com.example.todolistver2.Activity.AddTimerTaskActivity;
 import com.example.todolistver2.Activity.UpdateTimerTaskActivity;
 import com.example.todolistver2.Adapters.RecyclerViewTimerAdapter;
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
-import com.example.todolistver2.Models.Note;
-import com.example.todolistver2.Models.Task;
+import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 
 import java.util.ArrayList;
@@ -66,12 +57,12 @@ public class TimerFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerViewTimerAdapter recyclerViewTimerAdapter;
     Context context;
-    List<Task> tasks;
+    List<TimerTask> timerTasks;
     ItemTouchHelper itemTouchHelper;
     CardView timerCardView;
     int selectedPositionTask;
     int selectedTaskColor;
-    Task deletedTask;
+    TimerTask deletedTimerTask;
     Calendar calendar;
     Button btnAddTask;
     DbManager dbManager;
@@ -83,8 +74,8 @@ public class TimerFragment extends Fragment {
                     Toast.makeText(getActivity(), "Create raise", Toast.LENGTH_SHORT).show();
                     Intent intent = result.getData();
                     if (intent != null ) {
-                        Task task = (Task) intent.getSerializableExtra(Constants.INTENT_CREATE_TIMER_TASK_KEY);
-                        tasks.add(Constants.INSERT_POSITION, task);
+                        TimerTask timerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_CREATE_TIMER_TASK_KEY);
+                        timerTasks.add(Constants.INSERT_POSITION, timerTask);
                         recyclerViewTimerAdapter.notifyItemInserted(Constants.INSERT_POSITION);
                     }
                 }
@@ -98,10 +89,10 @@ public class TimerFragment extends Fragment {
                     Toast.makeText(getActivity(), "Update raise", Toast.LENGTH_SHORT).show();
                     Intent intent = result.getData();
                     if (intent != null){
-                        Task task = (Task) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
+                        TimerTask timerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
                         int index = intent.getIntExtra(Constants.INTENT_INDEX_KEY, Constants.INTENT_DEFAULT_VALUE);
                         if (index != Constants.INTENT_DEFAULT_VALUE){
-                            tasks.set(index, task);
+                            timerTasks.set(index, timerTask);
                             recyclerViewTimerAdapter.notifyItemChanged(index);
                         }
                     }
@@ -115,9 +106,9 @@ public class TimerFragment extends Fragment {
         context = getActivity();
         selectedPositionTask = -1;
         dbManager = new DbManager(requireActivity());
-        tasks = new ArrayList<>();
-        tasks = dbManager.getAllTimerTasksDatabase();
-        Toast.makeText(context, "TimerFragmentOnCreate", Toast.LENGTH_SHORT).show();
+        timerTasks = new ArrayList<>();
+        timerTasks = dbManager.getAllTimerTasksDatabase();
+        //Toast.makeText(context, "TimerFragmentOnCreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -137,17 +128,17 @@ public class TimerFragment extends Fragment {
         btnAddTask = view.findViewById(R.id.timer_id_btn_add_task);
         MenuHost menuHost = requireActivity();
 
-        recyclerViewTimerAdapter = new RecyclerViewTimerAdapter(context, tasks );
+        recyclerViewTimerAdapter = new RecyclerViewTimerAdapter(context, timerTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( recyclerViewTimerAdapter);
-        tvTimerTaskName.setText("Выберите задачу для запуска таймера");
+        tvTimerTaskName.setText(getString(R.string.choose_task_for_timer));
         calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Moscow")));
 
         recyclerViewTimerAdapter.setOnItemClickListener(new RecyclerViewTimerAdapter.IOnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                startStopChronometer(itemView, isRunning, position);
+                startStopChronometer(position);
             }
 
             @Override
@@ -155,7 +146,7 @@ public class TimerFragment extends Fragment {
                 if (position != selectedPositionTask){
                     Intent intent = new Intent(context, UpdateTimerTaskActivity.class);
                     intent.putExtra(Constants.INTENT_INDEX_KEY, position);
-                    intent.putExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY, tasks.get(position));
+                    intent.putExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY, timerTasks.get(position));
                     updateTimerTask.launch(intent);
                 }
             }
@@ -170,22 +161,19 @@ public class TimerFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.pickDate:
-                        Toast.makeText(context, "pickDate", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "pickDate", Toast.LENGTH_SHORT).show();
                         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                context, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                month = month + 1;
-                                LocalDate date = LocalDate.of(year, month, datePicker.getDayOfMonth());
-                                String strDate = date.format(Constants.format_dd_MM_YYYY);
-                                Toast.makeText(context, strDate, Toast.LENGTH_SHORT).show();
-                                recyclerViewTimerAdapter.filterByDate(strDate);
-                            }
-                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                                context, (datePicker, year, month, day) -> {
+                                    month = month + 1;
+                                    LocalDate date = LocalDate.of(year, month, datePicker.getDayOfMonth());
+                                    String strDate = date.format(Constants.format_dd_MM_YYYY);
+                                    Toast.makeText(context, strDate, Toast.LENGTH_SHORT).show();
+                                    recyclerViewTimerAdapter.filterByDate(strDate);
+                                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                         datePickerDialog.show();
                         break;
                     case R.id.showAll:
-                        Toast.makeText(context, "ShowAll", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, "ShowAll", Toast.LENGTH_SHORT).show();
                         recyclerViewTimerAdapter.filterByDate("");
                         break;
                 }
@@ -193,19 +181,16 @@ public class TimerFragment extends Fragment {
             }
         },getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, AddTimerTaskActivity.class);
-                try {
-                    createTimerTask.launch(intent);
-                }
-                catch (Exception ex){
-                    Toast.makeText(requireActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-
+        btnAddTask.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context, AddTimerTaskActivity.class);
+            try {
+                createTimerTask.launch(intent);
             }
+            catch (Exception ex){
+                Toast.makeText(requireActivity(), ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+
         });
 
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -226,22 +211,19 @@ public class TimerFragment extends Fragment {
                     if (position == selectedPositionTask){
                         recyclerViewTimerAdapter.notifyItemChanged(position);
                         itemTouchHelper.startSwipe(viewHolder);
-                        Toast.makeText(context, "Stop timer before deleting this task", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, getText(R.string.stop_timer), Toast.LENGTH_LONG).show();
                         return;
                     }
-                    deletedTask = tasks.get(position);
-                    tasks.remove(position);
+                    deletedTimerTask = timerTasks.get(position);
+                    timerTasks.remove(position);
                     recyclerViewTimerAdapter.notifyItemRemoved(position);
                     dbManager.deleteTimerTaskDatabase(position + 1);
 
-                    Snackbar.make(recyclerView, deletedTask.getName(), Snackbar.LENGTH_LONG)
-                            .setAction("Отменить", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    tasks.add(position, deletedTask);
-                                    recyclerViewTimerAdapter.notifyItemInserted(position);
-                                    dbManager.addTimerTaskDatabase(deletedTask);
-                                }
+                    Snackbar.make(recyclerView, deletedTimerTask.getName(), Snackbar.LENGTH_LONG)
+                            .setAction("Отменить", view -> {
+                                timerTasks.add(position, deletedTimerTask);
+                                recyclerViewTimerAdapter.notifyItemInserted(position);
+                                dbManager.addTimerTaskDatabase(deletedTimerTask);
                             }).show();
                 }
                     break;
@@ -258,17 +240,17 @@ public class TimerFragment extends Fragment {
         }
     };
 
-    private void startStopChronometer(View view, boolean running, int positionTask){
+    private void startStopChronometer(int positionTask){
 
         if (!isRunning){
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
             isRunning = true;
-            tvTimerTaskName.setText(tasks.get(positionTask).getName());
+            tvTimerTaskName.setText(timerTasks.get(positionTask).getName());
             selectedPositionTask = positionTask;
-            selectedTaskColor = tasks.get(selectedPositionTask).getColorTask() ;
-            timerCardView.setCardBackgroundColor(tasks.get(selectedPositionTask).getColorTask());
-            tasks.get(selectedPositionTask).setColorTask(getResources().getColor(R.color.color_icon_category_default, context.getTheme()));
+            selectedTaskColor = timerTasks.get(selectedPositionTask).getColorTask() ;
+            timerCardView.setCardBackgroundColor(timerTasks.get(selectedPositionTask).getColorTask());
+            timerTasks.get(selectedPositionTask).setColorTask(getResources().getColor(R.color.color_icon_category_default, context.getTheme()));
             recyclerViewTimerAdapter.notifyItemChanged(selectedPositionTask);
 
 
@@ -280,15 +262,15 @@ public class TimerFragment extends Fragment {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 isRunning = false;
 
-                tasks.get(selectedPositionTask).addToTimeTask(amountMillis);
-                tasks.get(selectedPositionTask).setColorTask(selectedTaskColor);
+                timerTasks.get(selectedPositionTask).addToTimeTask(amountMillis);
+                timerTasks.get(selectedPositionTask).setColorTask(selectedTaskColor);
 
                 recyclerViewTimerAdapter.notifyItemChanged(selectedPositionTask);
 
-                timerCardView.setCardBackgroundColor(getResources().getColor(R.color.white ,context.getTheme()));
-                dbManager.updateTimeTimerTaskDatabase(positionTask+1,  tasks.get(selectedPositionTask).getTime());
+                timerCardView.setCardBackgroundColor(getResources().getColor(R.color.Pancho ,context.getTheme()));
+                dbManager.updateTimeTimerTaskDatabase(positionTask+1,  timerTasks.get(selectedPositionTask).getTime());
 
-                tvTimerTaskName.setText("Выберите задачу для запуска таймера");
+                tvTimerTaskName.setText(getString(R.string.choose_task_for_timer));
                 selectedPositionTask = -1;
             }
         }
