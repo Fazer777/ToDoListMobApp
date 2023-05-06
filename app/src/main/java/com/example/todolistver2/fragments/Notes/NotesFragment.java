@@ -85,7 +85,7 @@ public class NotesFragment extends Fragment {
         notes = new ArrayList<>();
         notes = dbManager.getAllNotesDatabase();
         Collections.reverse(notes);
-        Toast.makeText(context, "FragmentOnCreate", Toast.LENGTH_LONG).show();
+       // Toast.makeText(context, "FragmentOnCreate", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -179,7 +179,6 @@ public class NotesFragment extends Fragment {
 
                             }
                         }).setCancelable(false).create().show();
-
             }
         });
     }

@@ -6,14 +6,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.R;
-import com.example.todolistver2.fragments.Notes.NotesFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -51,29 +49,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-        //NavigationUI.setupActionBarWithNavController(MainActivity.this, navController);
-
-        //dbManager = new DbManager(MainActivity.this);
         loadDataFromDatabase();
 
 
     }
 
     private void loadDataFromDatabase() {
-//        Toast.makeText(MainActivity.this, "Load data start...", Toast.LENGTH_SHORT).show();
-//        List<Note> noteList = new ArrayList<>();
-//        noteList = dbManager.getAllNotesDatabase();
-//        Collections.reverse(noteList);
-//        bundle = new Bundle();
-//        bundle.putSerializable(Constants.BUNDLE_NOTE_LIST_KEY, new ArrayList<>(noteList));
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        NotesFragment fragInfo = new NotesFragment();
-//        fragInfo.setArguments(bundle);
-//        navController.navigate(R.id.notesFragment,bundle);
     }
 
 

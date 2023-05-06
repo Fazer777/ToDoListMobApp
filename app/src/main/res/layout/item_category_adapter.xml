@@ -14,7 +14,7 @@
         android:background="@drawable/ic_category_background"
         android:foreground="@drawable/ic_category_foreground"
         android:src="@drawable/ic_category_background"
-        android:contentDescription="Icon category"
+        android:contentDescription="@string/icon_category"
         app:tint="@color/lightGreen"
         app:shapeAppearanceOverlay="@style/ShapeableImageView.Round"
         />
