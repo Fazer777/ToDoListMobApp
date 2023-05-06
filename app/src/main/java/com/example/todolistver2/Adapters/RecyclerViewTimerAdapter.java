@@ -11,27 +11,23 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistver2.Constants.Constants;
-import com.example.todolistver2.Models.Task;
+import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewTimerAdapter.MyViewHolder> {
 
     Context context;
-    List<Task> tasks;
-    List<Task> originalValues;
+    List<TimerTask> timerTasks;
+    List<TimerTask> originalValues;
     IOnItemClickListener listener;
 
-    public RecyclerViewTimerAdapter(Context context, List<Task> tasks){
+    public RecyclerViewTimerAdapter(Context context, List<TimerTask> timerTasks){
         this.context = context;
-        this.tasks = tasks;
-        originalValues = tasks;
+        this.timerTasks = timerTasks;
+        originalValues = timerTasks;
     }
 
     public void setOnItemClickListener(IOnItemClickListener listener){
@@ -49,29 +45,29 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewTimerAdapter.MyViewHolder holder, int position) {
-        Task task = tasks.get(position);
-        holder.tvTaskName.setText(task.getName());
-        holder.tvTaskDate.setText(Constants.convertLocalDateTimeToString(task.getDateTime()));
-        holder.tvTaskTime.setText(task.getTime().format(Constants.timeFormat_HH_mm_ss));
-        holder.cvContainerTimer.setCardBackgroundColor(task.getColorTask());
+        TimerTask timerTask = timerTasks.get(position);
+        holder.tvTaskName.setText(timerTask.getName());
+        holder.tvTaskDate.setText(Constants.convertLocalDateTimeToString(timerTask.getDateTime()));
+        holder.tvTaskTime.setText(timerTask.getTime().format(Constants.timeFormat_HH_mm_ss));
+        holder.cvContainerTimer.setCardBackgroundColor(timerTask.getColorTask());
 
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return timerTasks.size();
     }
 
     public void filterByDate(String date) {
-        tasks = originalValues;
+        timerTasks = originalValues;
         if (!date.matches("")) {
-            List<Task> filteredItems = new ArrayList<>();
-            for (Task item : tasks) {
+            List<TimerTask> filteredItems = new ArrayList<>();
+            for (TimerTask item : timerTasks) {
                 if (item.getDateTime().format(Constants.format_dd_MM_YYYY).equals(date)) {
                     filteredItems.add(item);
                 }
             }
-            tasks = filteredItems;
+            timerTasks = filteredItems;
         }
 //        else {
 //            tasks = originalValues;
@@ -86,17 +82,16 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            cvContainerTimer = itemView.findViewById(R.id.item_task_id_card_view);
-            tvTaskName = itemView.findViewById(R.id.item_task_id_task_name);
-            tvTaskDate = itemView.findViewById(R.id.item_task_id_task_date);
-            tvTaskTime = itemView.findViewById(R.id.item_task_id_task_time);
+            cvContainerTimer = itemView.findViewById(R.id.item_timer_task_id_card_view);
+            tvTaskName = itemView.findViewById(R.id.item_timer_task_id_task_name);
+            tvTaskDate = itemView.findViewById(R.id.item_timer_task_id_task_date);
+            tvTaskTime = itemView.findViewById(R.id.item_timer_task_id_task_time);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null){
-                        //itemView.setSelected(!itemView.isSelected());
                         int position = getAdapterPosition();
                         if (position !=RecyclerView.NO_POSITION){
                             listener.onItemClick(itemView, position);
@@ -109,7 +104,6 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
                 @Override
                 public boolean onLongClick(View view) {
                     if (listener != null){
-                        //itemView.setSelected(!itemView.isSelected());
                         int position = getAdapterPosition();
                         if (position !=RecyclerView.NO_POSITION){
                             listener.onItemLongClick(itemView, position);
