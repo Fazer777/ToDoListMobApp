@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/Pancho">
 
     <EditText
         android:id="@+id/add_upd_timer_task_name"
@@ -21,7 +22,9 @@
         app:layout_constraintVertical_bias="0.332"
         android:inputType="text"
         android:importantForAutofill="no"
-        android:hint="Введите наименовение задачи"/>
+        android:hint="@string/input_name"
+        android:padding="5dp"
+        android:drawablePadding="10dp"/>
 
     <TextView
         android:id="@+id/add_upd_timer_task_color"
@@ -35,9 +38,12 @@
         android:layout_margin="10dp"
         android:background="@drawable/background_white_text_view"
         android:foreground="@drawable/background_transparent_text_view"
-        android:text="Цвет"
+        android:text="@string/choose_color"
         android:gravity="center"
         android:textSize="17sp"
+        android:drawableStart="@drawable/ic_color"
+        android:padding="5dp"
+        android:drawablePadding="5dp"
         />
 
     <TextView
@@ -50,10 +56,13 @@
         app:layout_constraintTop_toBottomOf="@id/add_upd_timer_task_name"
         app:layout_constraintVertical_bias="0.09"
         android:layout_margin="10dp"
-        android:background="@drawable/background_transparent_text_view"
-        android:text="Дата"
+        android:background="@drawable/background_white_text_view"
+        android:text="@string/choose_date"
         android:gravity="center"
         android:textSize="17sp"
+        android:drawableStart="@drawable/ic_calendar"
+        android:padding="5dp"
+        android:drawablePadding="5dp"
         />
 
     <Button
@@ -66,8 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Добавить" />
-
-
+        android:backgroundTint="@color/big_stone"
+        android:text="@string/add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

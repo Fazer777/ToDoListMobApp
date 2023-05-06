@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white"/>
+        android:background="@color/Ebb"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/notes_act_btn_add"
@@ -24,10 +24,10 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="43dp"
-        app:backgroundTint="@color/orange"
-        android:contentDescription="@string/content_description_act_btn_add_note"
+        app:backgroundTint="@color/big_stone"
+        android:contentDescription="@string/add_note"
         android:src="@drawable/ic_add_note"
-        app:tint="@color/blue"
+        app:tint="@color/teal_200"
         />
 
 

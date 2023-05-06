@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context=".fragments.Timer.TimerFragment">
+    tools:context=".fragments.Timer.TimerFragment"
+    android:background="@color/Ebb">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/timer_id_card_view"
@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:cardBackgroundColor="@color/Pancho"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +51,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="17sp"
-                android:text="Test task name"
+                android:text="@string/choose_task_for_timer"
                 android:textColor="@color/black"
                 android:gravity="center"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -65,7 +66,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/timer_id_btn_add_task"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/Ebb"/>
 
     <Button
         android:id="@+id/timer_id_btn_add_task"
@@ -77,9 +79,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="10dp"
         android:textColor="@color/white"
-        android:text="Добавить задачу"
+        android:text="@string/add_task"
         android:textSize="12sp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/big_stone"
         />
 
 

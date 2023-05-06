@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@id/add_note_id_spinner"
         android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
         app:menu="@menu/add_note_toolbar_menu"
-        android:background="@color/orange"
+        android:background="@color/big_stone"
         />
     <Spinner
         android:id="@+id/add_note_id_spinner"
@@ -25,23 +25,23 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
         app:layout_constraintEnd_toStartOf="@id/add_note_id_date_time_view"
-        android:contentDescription="Choose category of note"
+        android:contentDescription="@string/category_note"
         android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.DropDownItem.Spinner"
+        android:background="@color/color_icon_category_default"
         />
     <TextView
         android:id="@+id/add_note_id_date_time_view"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:textColor="#939393"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
         app:layout_constraintLeft_toRightOf="@id/add_note_id_spinner"
         app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
         android:textSize="14sp"
-        android:text="20.04.23 18:00:00"
+        android:background="@color/MauveTaupe"
         />
-
 
     <EditText
         android:id="@+id/add_note_id_description"
@@ -49,11 +49,10 @@
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
         android:importantForAutofill="no"
-        android:background="@android:color/transparent"
+        android:background="@color/Ebb"
         android:inputType="textMultiLine"
-        android:hint="@string/add_note_hint_description"
+        android:hint="@string/add_note"
         android:gravity="top"
         android:padding="5dp"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
