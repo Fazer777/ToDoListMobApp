@@ -13,8 +13,20 @@
     <color name="lightPink">#FDDBFC</color>
     <color name="blue">#0083C2</color>
     <color name="orange">#FFDA69</color>
-    <color name="test">#FFB0B0</color>
+    <color name="big_stone">#14223e</color>
+    <color name="chestnut">#cd5768</color>
+    <color name="purple_taupe">#573d4a</color>
+    <color name="shiraz">#ba092a</color>
+    <color name="pictorial_carmine">#c00b3d</color>
     <color name="red">#FF8282</color>
     <color name="color_icon_category_default">#C2C2C2</color>
+
+    <color name="Ebb">#e9e7e6</color>
+    <color name="Blackcurrant">#36283c</color>
+    <color name="MauveTaupe">#8c616b</color>
+    <color name="PaleCopper">#cf8a68</color>
+    <color name="Pancho">#eccca4</color>
+    <color name="SpicyMix">#8a5056</color>
+
 
 </resources>
