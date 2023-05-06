@@ -1,27 +1,29 @@
 package com.example.todolistver2.Models;
 
 import java.io.Serializable;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 
 public class Task implements Serializable {
-
     private String name;
-    private LocalDateTime dateTime;
-    private int colorTask;
-    private LocalTime time;
+    //private List<SubTask> subTaskList;
+    private Boolean isCompleted;
+    private int color;
+    private String description;
+    private LocalDate date;
 
+//    public class SubTask implements Serializable{
+//        private String name;
+//        private Boolean isCompleted;
+//    }
     public Task(){
 
     }
-
-    public Task(String name, LocalDateTime dateTime, int colorTask, LocalTime time) {
+    public Task(String name, Boolean isCompleted, int color, String description, LocalDate date){
         this.name = name;
-        this.dateTime = dateTime;
-        this.colorTask = colorTask;
-        this.time = time;
+        this.isCompleted = isCompleted;
+        this.color = color;
+        this.description = description;
+        this.date = date;
     }
 
     public String getName() {
@@ -32,33 +34,35 @@ public class Task implements Serializable {
         this.name = name;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public Boolean getCompleted() {
+        return isCompleted;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
     }
 
-    public int getColorTask() {
-        return colorTask;
+    public int getColor() {
+        return color;
     }
 
-    public void setColorTask(int colorTask) {
-        this.colorTask = colorTask;
+    public void setColor(int color) {
+        this.color = color;
     }
 
-    public LocalTime getTime() {
-        return time;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void addToTimeTask(long amountMillis){
-        long seconds = amountMillis/1000;
-        time = time.plus(seconds, ChronoUnit.SECONDS);
-        //time = time.plus(Duration.ofSeconds(amount));
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }
