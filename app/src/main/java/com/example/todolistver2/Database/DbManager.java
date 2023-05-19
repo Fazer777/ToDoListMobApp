@@ -38,6 +38,7 @@ public class DbManager {
             String hexColor = String.format("#%06X", (0xFFFFFF & note.getCategory().getColor()));
             cv.put(TableNotes.COLOR_CATEGORY, hexColor);
             cv.put(TableNotes.NOTE_DATETIME, Constants.convertLocalDateTimeToString(note.getLocalDateTime()));
+            cv.put(TableNotes.ITEM_INDEX, note.getItemIndex());
 
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableNotes.TABLE_NAME, null, cv);
@@ -62,17 +63,16 @@ public class DbManager {
     }
 
     // Update note in database
-    public void updateNoteDatabase(int id, Note note){
+    public void updateNoteDatabase(int itemIndex, Note note){
         ContentValues cv = new ContentValues();
-        cv.put(TableNotes.ID, id);
         cv.put(TableNotes.DESCRIPTION, note.getDescription());
         cv.put(TableNotes.CATEGORY_NAME, note.getCategory().getName());
         cv.put(TableNotes.NOTE_DATETIME, Constants.convertLocalDateTimeToString(note.getLocalDateTime()));
         String hexColor = String.format("#%06X", (0xFFFFFF & note.getCategory().getColor()));
         cv.put(TableNotes.COLOR_CATEGORY, hexColor);
 
-        String selection = TableNotes.ID + " = ?";
-        String[] selectionArgs = { String.valueOf(id) };
+        String selection = TableNotes.ITEM_INDEX + " = ?";
+        String[] selectionArgs = { String.valueOf(itemIndex) };
 
         try{
             int count = dbHelper.getWritableDatabase().update(
@@ -97,11 +97,14 @@ public class DbManager {
     }
 
     // Delete note from database
-    public void deleteNoteDatabase(int id){
-        String whereClause = TableNotes.ID + "= ?";
-        String[] whereArgs = { String.valueOf(id) };
+    public void deleteNoteDatabase(int position){
+        String whereDelClause = TableNotes.ITEM_INDEX + "= ?";
+        String[] whereArgs = { String.valueOf(position) };
         try{
-            dbHelper.getWritableDatabase().delete(TableNotes.TABLE_NAME, whereClause, whereArgs);
+            dbHelper.getWritableDatabase().delete(TableNotes.TABLE_NAME, whereDelClause, whereArgs);
+            dbHelper.getWritableDatabase().execSQL("UPDATE " + TableNotes.TABLE_NAME + " SET " + TableNotes.ITEM_INDEX + " = " +
+                    TableNotes.ITEM_INDEX + " -1 " + " WHERE " + TableNotes.ITEM_INDEX + " > " + position + ";");
+
         }
         catch (Exception ex){
             Toast.makeText(context, "delete_note_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -118,6 +121,7 @@ public class DbManager {
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(selectAllQuery, null);
         while (cursor.moveToNext()){
             Note note = new Note();
+            note.setItemIndex(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(TableNotes.ITEM_INDEX))));
             note.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TableNotes.DESCRIPTION)));
 
             Category category = new Category();
@@ -135,16 +139,17 @@ public class DbManager {
         return allNotes;
     }
 
-    //-----------------------------------#TABLE TIMER_TASKS#----------------------------------------
+    //-----------------------------------#TABLE TIMER#----------------------------------------
 
     public void addTimerTaskDatabase(TimerTask timerTask){
         if (timerTask != null){
             ContentValues cv = new ContentValues();
             cv.put(TableTimerTasks.TIMER_TASK_NAME, timerTask.getName());
-            cv.put(TableTimerTasks.TIMER_TASK_DATETIME, Constants.convertLocalDateTimeToString(timerTask.getDateTime()));
+            cv.put(TableTimerTasks.TIMER_TASK_DATETIME, timerTask.getDate().format(Constants.format_dd_MM_YYYY));
             String hexColor = String.format("#%06X", (0xFFFFFF & timerTask.getColorTask()));
             cv.put(TableTimerTasks.TIMER_TASK_COLOR, hexColor);
             cv.put(TableTimerTasks.TIMER_TASK_TIME, timerTask.getTime().format(Constants.timeFormat_HH_mm_ss));
+            cv.put(TableTimerTasks.TIMER_TASK_ITEM_INDEX, timerTask.getItemIndex());
 
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableTimerTasks.TABLE_NAME, null, cv);
@@ -168,15 +173,15 @@ public class DbManager {
         }
     }
 
-    public void updateTimerTaskDatabase(int id, TimerTask timerTask){
+    public void updateTimerTaskDatabase(int itemIndex, TimerTask timerTask){
         ContentValues cv = new ContentValues();
         cv.put(TableTimerTasks.TIMER_TASK_NAME, timerTask.getName());
-        cv.put(TableTimerTasks.TIMER_TASK_DATETIME, timerTask.getDateTime().format(Constants.format_dd_MM_YYYY_HH_mm_ss));
+        cv.put(TableTimerTasks.TIMER_TASK_DATETIME, timerTask.getDate().format(Constants.format_dd_MM_YYYY));
         String hexColor = String.format("#%06X", (0xFFFFFF & timerTask.getColorTask()));
         cv.put(TableTimerTasks.TIMER_TASK_COLOR, hexColor);
 
-        String selection = TableTimerTasks.ID + " = ?";
-        String[] selectionArgs = { String.valueOf(id) };
+        String selection = TableTimerTasks.TIMER_TASK_ITEM_INDEX + " = ?";
+        String[] selectionArgs = { String.valueOf(itemIndex) };
 
         try{
             int count = dbHelper.getWritableDatabase().update(
@@ -200,12 +205,12 @@ public class DbManager {
         }
     }
 
-    public void updateTimeTimerTaskDatabase(int id, LocalTime time){
+    public void updateTimeTimerTaskDatabase(int itemIndex, LocalTime time){
         ContentValues cv = new ContentValues();
         cv.put(TableTimerTasks.TIMER_TASK_TIME, time.format(Constants.timeFormat_HH_mm_ss));
 
-        String selection = TableNotes.ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(id) };
+        String selection = TableNotes.ITEM_INDEX + "= ?";
+        String[] selectionArgs = { String.valueOf(itemIndex) };
 
         try{
             int count = dbHelper.getWritableDatabase().update(TableTimerTasks.TABLE_NAME, cv, selection, selectionArgs );
@@ -225,11 +230,13 @@ public class DbManager {
         }
     }
 
-    public void deleteTimerTaskDatabase(int id){
-        String whereClause = TableTimerTasks.ID + "= ?";
-        String[] whereArgs = { String.valueOf(id) };
+    public void deleteTimerTaskDatabase(int itemIndex){
+        String whereClause = TableTimerTasks.TIMER_TASK_ITEM_INDEX + "= ?";
+        String[] whereArgs = { String.valueOf(itemIndex) };
         try{
             dbHelper.getWritableDatabase().delete(TableTimerTasks.TABLE_NAME, whereClause, whereArgs);
+            dbHelper.getWritableDatabase().execSQL("UPDATE " + TableTimerTasks.TABLE_NAME + " SET " + TableTimerTasks.TIMER_TASK_ITEM_INDEX + " = " +
+                    TableTimerTasks.TIMER_TASK_ITEM_INDEX + " -1 " + " WHERE " + TableTimerTasks.TIMER_TASK_ITEM_INDEX + " > " + itemIndex + ";");
         }
         catch (Exception ex){
             Toast.makeText(context, "delete_timer_task_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -239,14 +246,9 @@ public class DbManager {
         }
     }
 
-    // TODO may be will write try-catch???
     public List<TimerTask> getAllTimerTasksDatabase(){
 
         List<TimerTask> allTimerTasks = new ArrayList<>();
-
-        String sortOrder =
-                TableTimerTasks.TIMER_TASK_DATETIME + " DESC";
-
         Cursor cursor = dbHelper.getReadableDatabase().query(
                 TableTimerTasks.TABLE_NAME,   // The table to query
                 null,             // The array of columns to return (pass null to get all)
@@ -254,18 +256,19 @@ public class DbManager {
                 null,          // The values for the WHERE clause
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
-                sortOrder               // The sort order
+                null              // The sort order
         );
 
         while (cursor.moveToNext()){
             TimerTask timerTask = new TimerTask();
             timerTask.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_NAME)));
 
-            LocalDateTime dateTime = Constants.convertStringToLocalDate(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_DATETIME)));
-            timerTask.setDateTime(dateTime);
+            LocalDate date = LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_DATETIME)), Constants.format_dd_MM_YYYY);
+            timerTask.setDate(date);
 
             timerTask.setColorTask(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_COLOR))));
             timerTask.setTime(LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_TIME)), Constants.timeFormat_HH_mm_ss));
+            timerTask.setItemIndex(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_ITEM_INDEX))));
 
             allTimerTasks.add(timerTask);
         }
@@ -273,6 +276,36 @@ public class DbManager {
         dbHelper.close();
 
         return allTimerTasks;
+    }
+
+    public List<TimerTask> getFilteredTimerTasksByDate(String strDate){
+        List<TimerTask> filteredTasks = new ArrayList<>();
+
+        String selection = TableTimerTasks.TIMER_TASK_DATETIME + " = ?";
+        String[] selectionArgs = { strDate };
+        Cursor cursor = dbHelper.getReadableDatabase().query(
+                TableTimerTasks.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        while(cursor.moveToNext()){
+            TimerTask timerTask = new TimerTask();
+            timerTask.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_NAME)));
+            timerTask.setColorTask(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_COLOR))));
+            timerTask.setItemIndex(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_ITEM_INDEX))));
+            timerTask.setTime(LocalTime.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_TIME)), Constants.timeFormat_HH_mm_ss));
+            timerTask.setDate(LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTimerTasks.TIMER_TASK_DATETIME)), Constants.format_dd_MM_YYYY));
+            filteredTasks.add(timerTask);
+        }
+
+        cursor.close();
+        dbHelper.close();
+        return filteredTasks;
     }
 
 
@@ -286,6 +319,11 @@ public class DbManager {
             cv.put(TableTasks.TASK_COMPLETED, booleanToInt(task.getCompleted()));
             String hexColor = String.format("#%06X", (0xFFFFFF & task.getColor()));
             cv.put(TableTasks.TASK_COLOR, hexColor);
+            cv.put(TableTasks.TASK_ITEM_INDEX, task.getItemIndex());
+            if (task.getDateComplete() != null){
+                cv.put(TableTasks.TASK_DATE_COMPLETE, task.getDateComplete().format(Constants.format_dd_MM_YYYY));
+            }
+
 
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableTasks.TABLE_NAME, null, cv);
@@ -308,18 +346,21 @@ public class DbManager {
         }
     }
 
-    public void updateTaskDataBase(int id, Task task){
+    public void updateTaskDataBase(int itemIndex, Task task){
         ContentValues cv = new ContentValues();
-        cv.put(TableTasks.ID, id);
         cv.put(TableTasks.TASK_NAME, task.getName());
         cv.put(TableTasks.TASK_DESCRIPTION, task.getDescription());
         cv.put(TableTasks.TASK_DATE, task.getDate().format(Constants.format_dd_MM_YYYY));
         cv.put(TableTasks.TASK_COMPLETED, booleanToInt(task.getCompleted()));
         String hexColor = String.format("#%06X", (0xFFFFFF & task.getColor()));
         cv.put(TableTasks.TASK_COLOR, hexColor);
+        if (task.getDateComplete() != null){
+            cv.put(TableTasks.TASK_DATE_COMPLETE, task.getDateComplete().format(Constants.format_dd_MM_YYYY));
+        }
 
-        String selection = TableTasks.ID + " = ?";
-        String[] selectionArgs = { String.valueOf(id) };
+
+        String selection = TableTasks.TASK_ITEM_INDEX + " = ?";
+        String[] selectionArgs = { String.valueOf(itemIndex) };
 
         try{
             int count = dbHelper.getWritableDatabase().update(
@@ -343,11 +384,13 @@ public class DbManager {
         }
     }
 
-    public void deleteTaskDatabase(int id){
-        String whereClause = TableTasks.ID + "= ?";
-        String[] whereArgs = { String.valueOf(id) };
+    public void deleteTaskDatabase(int itemIndex){
+        String whereClause = TableTasks.TASK_ITEM_INDEX + "= ?";
+        String[] whereArgs = { String.valueOf(itemIndex) };
         try{
             dbHelper.getWritableDatabase().delete(TableTasks.TABLE_NAME, whereClause, whereArgs);
+            dbHelper.getWritableDatabase().execSQL("UPDATE " + TableTasks.TABLE_NAME + " SET " + TableTasks.TASK_ITEM_INDEX + " = " +
+                    TableTasks.TASK_ITEM_INDEX + " -1 " + " WHERE " + TableTasks.TASK_ITEM_INDEX + " > " + itemIndex + ";");
         }
         catch (Exception ex){
             Toast.makeText(context, "delete_task_database: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -360,8 +403,6 @@ public class DbManager {
     public List<Task> getAllTasksDatabase(){
         List<Task> allTasks = new ArrayList<>();
 
-        String sortOrder =
-                TableTasks.TASK_DATE + " DESC";
         Cursor cursor = dbHelper.getReadableDatabase().query(
                 TableTasks.TABLE_NAME,
                 null,
@@ -369,7 +410,7 @@ public class DbManager {
                 null,
                 null,
                 null,
-                sortOrder
+                null
         );
 
         while(cursor.moveToNext()){
@@ -380,14 +421,21 @@ public class DbManager {
             task.setColor(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_COLOR))));
             int i = cursor.getInt(cursor.getColumnIndexOrThrow(TableTasks.TASK_COMPLETED));
             task.setCompleted(intToBoolean(i));
+            task.setItemIndex(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_ITEM_INDEX))));
+            String strDate = cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.TASK_DATE_COMPLETE));
+            if (strDate != null){
+                task.setDateComplete(LocalDate.parse(strDate, Constants.format_dd_MM_YYYY));
+            }
+
             allTasks.add(task);
         }
 
         cursor.close();
         dbHelper.close();
-
         return  allTasks;
     }
+
+    // Other functions
 
     private Boolean intToBoolean(int num){
         return num > 0;

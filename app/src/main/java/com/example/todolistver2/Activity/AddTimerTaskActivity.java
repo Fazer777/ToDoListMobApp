@@ -77,10 +77,9 @@ public class AddTimerTaskActivity extends AppCompatActivity implements ColorPick
             TimerTask timerTask = new TimerTask();
             timerTask.setName(etTaskName.getText().toString());
             timerTask.setTime(LocalTime.of(0,0,0));
-            LocalDateTime dateTime = LocalDateTime.of(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY), LocalTime.now());
-            timerTask.setDateTime(dateTime);
+            LocalDate dateTime = LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY);
+            timerTask.setDate(dateTime);
             timerTask.setColorTask(timerTaskColor);
-            dbManager.addTimerTaskDatabase(timerTask);
             Intent intent = new Intent();
             intent.putExtra(Constants.INTENT_CREATE_TIMER_TASK_KEY, timerTask);
             setResult(Constants.TIMER_TASK_CREATE_ACTION, intent);

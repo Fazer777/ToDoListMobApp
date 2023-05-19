@@ -97,7 +97,6 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
         Category category = (Category) spCategory.getSelectedItem();
         note.setCategory(category);
         note.setLocalDateTime(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
-        dbManager.addNoteDatabase(note);
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_CREATE_NOTE_KEY, note);
         setResult(Constants.NOTE_CREATE_ACTION, intent);

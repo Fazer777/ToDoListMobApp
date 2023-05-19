@@ -37,7 +37,7 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
     @NonNull
     @Override
     public RecyclerViewTimerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // TODO поменял контекст
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_recycler_view_timer, parent, false);
         return new MyViewHolder(view);
@@ -47,7 +47,7 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
     public void onBindViewHolder(@NonNull RecyclerViewTimerAdapter.MyViewHolder holder, int position) {
         TimerTask timerTask = timerTasks.get(position);
         holder.tvTaskName.setText(timerTask.getName());
-        holder.tvTaskDate.setText(Constants.convertLocalDateTimeToString(timerTask.getDateTime()));
+        holder.tvTaskDate.setText(timerTask.getDate().format(Constants.format_dd_MM_YYYY));
         holder.tvTaskTime.setText(timerTask.getTime().format(Constants.timeFormat_HH_mm_ss));
         holder.cvContainerTimer.setCardBackgroundColor(timerTask.getColorTask());
 
@@ -63,15 +63,12 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
         if (!date.matches("")) {
             List<TimerTask> filteredItems = new ArrayList<>();
             for (TimerTask item : timerTasks) {
-                if (item.getDateTime().format(Constants.format_dd_MM_YYYY).equals(date)) {
+                if (item.getDate().format(Constants.format_dd_MM_YYYY).equals(date)) {
                     filteredItems.add(item);
                 }
             }
             timerTasks = filteredItems;
         }
-//        else {
-//            tasks = originalValues;
-//        }
         notifyDataSetChanged();
     }
 
@@ -92,7 +89,7 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
                 @Override
                 public void onClick(View view) {
                     if (listener != null){
-                        int position = getAdapterPosition();
+                        int position = getLayoutPosition();
                         if (position !=RecyclerView.NO_POSITION){
                             listener.onItemClick(itemView, position);
                         }
@@ -104,7 +101,7 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
                 @Override
                 public boolean onLongClick(View view) {
                     if (listener != null){
-                        int position = getAdapterPosition();
+                        int position = getLayoutPosition();
                         if (position !=RecyclerView.NO_POSITION){
                             listener.onItemLongClick(itemView, position);
                         }
@@ -115,6 +112,12 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
 
         }
     }
+
+    public void setTimerTasks(List<TimerTask> taskList){
+        timerTasks = taskList;
+        notifyDataSetChanged();
+    }
+
 
     public interface IOnItemClickListener{
         void onItemClick(View itemView, int position);

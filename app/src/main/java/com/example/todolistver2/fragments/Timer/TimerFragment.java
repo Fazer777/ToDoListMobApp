@@ -38,7 +38,6 @@ import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -66,6 +65,8 @@ public class TimerFragment extends Fragment {
     Calendar calendar;
     Button btnAddTask;
     DbManager dbManager;
+    boolean isDatePick = false;
+    String selectedDate;
 
     private final ActivityResultLauncher<Intent> createTimerTask = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -75,8 +76,10 @@ public class TimerFragment extends Fragment {
                     Intent intent = result.getData();
                     if (intent != null ) {
                         TimerTask timerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_CREATE_TIMER_TASK_KEY);
-                        timerTasks.add(Constants.INSERT_POSITION, timerTask);
-                        recyclerViewTimerAdapter.notifyItemInserted(Constants.INSERT_POSITION);
+                        timerTask.setItemIndex(timerTasks.size());
+                        timerTasks.add(timerTask);
+                        recyclerViewTimerAdapter.notifyItemInserted(timerTasks.size()-1);
+                        dbManager.addTimerTaskDatabase(timerTask);
                     }
                 }
             }
@@ -108,7 +111,6 @@ public class TimerFragment extends Fragment {
         dbManager = new DbManager(requireActivity());
         timerTasks = new ArrayList<>();
         timerTasks = dbManager.getAllTimerTasksDatabase();
-        //Toast.makeText(context, "TimerFragmentOnCreate", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -161,20 +163,22 @@ public class TimerFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.pickDate:
-                        //Toast.makeText(context, "pickDate", Toast.LENGTH_SHORT).show();
                         DatePickerDialog datePickerDialog = new DatePickerDialog(
                                 context, (datePicker, year, month, day) -> {
+                                    isDatePick = true;
                                     month = month + 1;
                                     LocalDate date = LocalDate.of(year, month, datePicker.getDayOfMonth());
-                                    String strDate = date.format(Constants.format_dd_MM_YYYY);
-                                    Toast.makeText(context, strDate, Toast.LENGTH_SHORT).show();
-                                    recyclerViewTimerAdapter.filterByDate(strDate);
+                                    selectedDate = date.format(Constants.format_dd_MM_YYYY);
+                                    Toast.makeText(context, selectedDate, Toast.LENGTH_SHORT).show();
+                                    timerTasks = dbManager.getFilteredTimerTasksByDate(selectedDate);
+                                    recyclerViewTimerAdapter.setTimerTasks(timerTasks);
                                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                         datePickerDialog.show();
                         break;
                     case R.id.showAll:
-                       // Toast.makeText(context, "ShowAll", Toast.LENGTH_SHORT).show();
-                        recyclerViewTimerAdapter.filterByDate("");
+                        isDatePick = false;
+                        timerTasks = dbManager.getAllTimerTasksDatabase();
+                        recyclerViewTimerAdapter.setTimerTasks(timerTasks);
                         break;
                 }
                 return true;
@@ -217,14 +221,15 @@ public class TimerFragment extends Fragment {
                     deletedTimerTask = timerTasks.get(position);
                     timerTasks.remove(position);
                     recyclerViewTimerAdapter.notifyItemRemoved(position);
-                    dbManager.deleteTimerTaskDatabase(position + 1);
+                    dbManager.deleteTimerTaskDatabase(deletedTimerTask.getItemIndex());
 
-                    Snackbar.make(recyclerView, deletedTimerTask.getName(), Snackbar.LENGTH_LONG)
-                            .setAction("Отменить", view -> {
-                                timerTasks.add(position, deletedTimerTask);
-                                recyclerViewTimerAdapter.notifyItemInserted(position);
-                                dbManager.addTimerTaskDatabase(deletedTimerTask);
-                            }).show();
+                    if(isDatePick){
+                        timerTasks = dbManager.getFilteredTimerTasksByDate(selectedDate);
+                    }
+                    else{
+                        timerTasks = dbManager.getAllTimerTasksDatabase();
+                    }
+                    recyclerViewTimerAdapter.setTimerTasks(timerTasks);
                 }
                     break;
             }
@@ -268,7 +273,7 @@ public class TimerFragment extends Fragment {
                 recyclerViewTimerAdapter.notifyItemChanged(selectedPositionTask);
 
                 timerCardView.setCardBackgroundColor(getResources().getColor(R.color.Pancho ,context.getTheme()));
-                dbManager.updateTimeTimerTaskDatabase(positionTask+1,  timerTasks.get(selectedPositionTask).getTime());
+                dbManager.updateTimeTimerTaskDatabase(positionTask,  timerTasks.get(selectedPositionTask).getTime());
 
                 tvTimerTaskName.setText(getString(R.string.choose_task_for_timer));
                 selectedPositionTask = -1;

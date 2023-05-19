@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/add_note_id_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/add_note_id_spinner"
@@ -30,29 +30,32 @@
         style="@style/Widget.AppCompat.DropDownItem.Spinner"
         android:background="@color/color_icon_category_default"
         />
+
     <TextView
         android:id="@+id/add_note_id_date_time_view"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:background="@color/MauveTaupe"
+        android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar"
+        android:textSize="14sp"
         app:layout_constraintLeft_toRightOf="@id/add_note_id_spinner"
         app:layout_constraintRight_toRightOf="parent"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:background="@color/MauveTaupe"
-        />
+        app:layout_constraintTop_toBottomOf="@id/add_note_id_toolbar" />
 
     <EditText
         android:id="@+id/add_note_id_description"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:importantForAutofill="no"
+        android:layout_height="0dp"
         android:background="@color/Ebb"
-        android:inputType="textMultiLine"
-        android:hint="@string/add_note"
         android:gravity="top"
-        android:padding="5dp"/>
+        android:hint="@string/add_note"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_note_id_date_time_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

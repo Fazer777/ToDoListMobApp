@@ -9,7 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasks_id_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/Ebb"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/tasks_id_btn_add"

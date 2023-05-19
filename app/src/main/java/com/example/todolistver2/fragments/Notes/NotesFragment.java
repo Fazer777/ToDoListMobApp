@@ -52,8 +52,10 @@ public class NotesFragment extends Fragment {
                 Intent intent = result.getData();
                 if (intent != null ){
                     Note note = (Note)intent.getSerializableExtra(Constants.INTENT_CREATE_NOTE_KEY);
-                    notes.add(Constants.INSERT_POSITION, note);
-                    recyclerViewAdapter.notifyItemInserted(Constants.INSERT_POSITION);
+                    note.setItemIndex(notes.size());
+                    notes.add(note);
+                    dbManager.addNoteDatabase(note);
+                    recyclerViewAdapter.notifyItemInserted(notes.size() - 1);
                 }
             }
         }
@@ -84,8 +86,6 @@ public class NotesFragment extends Fragment {
         context = getContext();
         notes = new ArrayList<>();
         notes = dbManager.getAllNotesDatabase();
-        Collections.reverse(notes);
-       // Toast.makeText(context, "FragmentOnCreate", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -99,31 +99,13 @@ public class NotesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        menuHost = requireActivity();
-//        menuHost.addMenuProvider(new MenuProvider() {
-//            @Override
-//            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-//                menuInflater.inflate(R.menu.toolbar_notes_fragment, menu);
-//                toolbarMenu = menu;
-//                showDeleteIcon(false);
-//            }
-//
-//            @Override
-//            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-//                if (menuItem.getItemId() == R.id.menu_notes_fragment_toolbar_delete){
-//                    Toast.makeText(context, "Delete is work", Toast.LENGTH_SHORT).show();
-//                }
-//                return true;
-//            }
-//        },getViewLifecycleOwner(), Lifecycle.State.RESUMED);
-
         buttonAddNote = view.findViewById(R.id.notes_act_btn_add);
         recyclerView = view.findViewById(R.id.notes_recycler_view);
         recyclerViewAdapter =new RecyclerViewNoteAdapter(context, notes);
         recyclerView.setLayoutManager(new GridLayoutManager(context,2));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerViewAdapter);
+
 
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +148,7 @@ public class NotesFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 notes.remove(position);
                                 recyclerViewAdapter.notifyItemRemoved(position);
-                                dbManager.deleteNoteDatabase(position + 1);
+                                dbManager.deleteNoteDatabase(position);
                                 Toast.makeText(context, "Delete!", Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -182,10 +164,4 @@ public class NotesFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
 }

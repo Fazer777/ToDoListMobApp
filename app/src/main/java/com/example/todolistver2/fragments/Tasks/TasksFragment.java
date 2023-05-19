@@ -45,8 +45,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-
-
 public class TasksFragment extends Fragment{
 
     Context context;
@@ -65,9 +63,6 @@ public class TasksFragment extends Fragment{
     CheckBox sheetCbComplete;
     int selectedColor;
     DbManager dbManager;
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,9 +104,10 @@ public class TasksFragment extends Fragment{
 
             sheetBtnSave.setOnClickListener(view2 -> {
                 if (!sheetEtName.getText().toString().matches("") && !sheetTvDate.getText().toString().matches("")){
-                    Task task = setTaskData();
-                    taskList.add(Constants.INSERT_POSITION, task);
-                    recyclerViewTaskAdapter.notifyItemInserted(Constants.INSERT_POSITION);
+                    Task task = setTaskData(new Task());
+                    task.setItemIndex(taskList.size());
+                    taskList.add(task);
+                    recyclerViewTaskAdapter.notifyItemInserted(taskList.size() - 1);
                     dbManager.addTaskDatabase(task);
                     dialog.dismiss();
                 }
@@ -138,10 +134,10 @@ public class TasksFragment extends Fragment{
 
                 sheetBtnSave.setOnClickListener(view1 -> {
                     if (!sheetEtName.getText().toString().matches("") && !sheetTvDate.getText().toString().matches("")){
-                        Task task = setTaskData();
+                        Task task = setTaskData(taskList.get(position));
                         taskList.set(position, task);
                         recyclerViewTaskAdapter.notifyItemChanged(position);
-                        dbManager.updateTaskDataBase(position +1, task);
+                        dbManager.updateTaskDataBase(task.getItemIndex(), task);
                         dialog.dismiss();
                     }
                     else{
@@ -165,8 +161,9 @@ public class TasksFragment extends Fragment{
                         .setNegativeButton("Yes", (dialogInterface, i) -> {
                             taskList.remove(position);
                             recyclerViewTaskAdapter.notifyItemRemoved(position);
-                            dbManager.deleteTaskDatabase(position + 1);
+                            dbManager.deleteTaskDatabase(task.getItemIndex());
                             Toast.makeText(context, "Delete!", Toast.LENGTH_SHORT).show();
+                            taskList = dbManager.getAllTasksDatabase();
                         })
                         .setPositiveButton("No", (dialogInterface, i) -> {
                             Toast.makeText(context, "Not delete", Toast.LENGTH_SHORT).show();
@@ -245,13 +242,19 @@ public class TasksFragment extends Fragment{
 
     }
 
-    private Task setTaskData(){
-        Task task = new Task();
+    private Task setTaskData(Task task){
+        //Task task = taskList.get(position);
         task.setName(sheetEtName.getText().toString());
         task.setDescription(sheetEtDescription.getText().toString());
         task.setColor(selectedColor);
         task.setDate(LocalDate.parse(sheetTvDate.getText(), Constants.format_dd_MM_YYYY));
         task.setCompleted(sheetCbComplete.isChecked());
+        if (task.getCompleted()){
+            task.setDateComplete(LocalDate.now());
+        }
+        else{
+            task.setDateComplete(null);
+        }
         return task;
     }
 }

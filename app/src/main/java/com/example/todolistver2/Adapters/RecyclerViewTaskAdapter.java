@@ -1,6 +1,8 @@
 package com.example.todolistver2.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,14 +41,15 @@ public class RecyclerViewTaskAdapter extends RecyclerView.Adapter<RecyclerViewTa
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewTaskAdapter.MyViewHolder holder, int position) {
         holder.tvName.setText(taskList.get(position).getName());
         holder.cardView.setCardBackgroundColor(taskList.get(position).getColor());
         if (taskList.get(position).getCompleted()){
             holder.tvName.setPaintFlags(holder.tvName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            String date = LocalDate.now().getDayOfMonth() + " " + LocalDate.now().getMonth() + " " + LocalDate.now().getYear();
-            holder.tvDate.setText("Завершено " + date);
+            LocalDate date = taskList.get(position).getDateComplete();
+            holder.tvDate.setText("Завершено " + date.getDayOfMonth() + " " + date.getMonth() + " " + date.getYear());
         }
         else{
             holder.tvName.setPaintFlags(holder.tvName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));

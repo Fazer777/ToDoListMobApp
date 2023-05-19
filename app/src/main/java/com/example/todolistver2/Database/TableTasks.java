@@ -7,7 +7,9 @@ public class TableTasks {
     public static final String TASK_DESCRIPTION = "task_description";
     public static final String TASK_DATE = "task_date";
     public static final String TASK_COMPLETED = "task_completed";
+    public static final String TASK_DATE_COMPLETE = "task_date_complete";
     public static final String TASK_COLOR = "task_color";
+    public static final String TASK_ITEM_INDEX = "item_index";
 
     public static final String CREATE_TABLE_TASKS =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
@@ -16,7 +18,9 @@ public class TableTasks {
                     TASK_DESCRIPTION + " TEXT," +
                     TASK_DATE + " TEXT," +
                     TASK_COMPLETED + " INTEGER," +
-                    TASK_COLOR + " TEXT)";
+                    TASK_DATE_COMPLETE + " TEXT," +
+                    TASK_COLOR + " TEXT," +
+                    TASK_ITEM_INDEX + " INTEGER)";
 
     public static final String DELETE_TABLE_TASKS =
             "DROP TABLE IF EXISTS " + TABLE_NAME;

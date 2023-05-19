@@ -5,25 +5,15 @@ import java.time.LocalDate;
 
 public class Task implements Serializable {
     private String name;
-    //private List<SubTask> subTaskList;
     private Boolean isCompleted;
     private int color;
     private String description;
     private LocalDate date;
+    private LocalDate dateComplete;
+    private int itemIndex;
 
-//    public class SubTask implements Serializable{
-//        private String name;
-//        private Boolean isCompleted;
-//    }
     public Task(){
 
-    }
-    public Task(String name, Boolean isCompleted, int color, String description, LocalDate date){
-        this.name = name;
-        this.isCompleted = isCompleted;
-        this.color = color;
-        this.description = description;
-        this.date = date;
     }
 
     public String getName() {
@@ -64,5 +54,21 @@ public class Task implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(int itemIndex) {
+        this.itemIndex = itemIndex;
+    }
+
+    public LocalDate getDateComplete() {
+        return dateComplete;
+    }
+
+    public void setDateComplete(LocalDate dateComplete) {
+        this.dateComplete = dateComplete;
     }
 }

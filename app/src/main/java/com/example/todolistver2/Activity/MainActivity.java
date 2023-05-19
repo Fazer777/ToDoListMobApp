@@ -1,16 +1,23 @@
 package com.example.todolistver2.Activity;
 
+
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
+import com.example.todolistver2.Models.Note;
 import com.example.todolistver2.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,11 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavBar;
     private NavController navController;
     private Toolbar toolbar;
-    //ISelectedBundle selectedBundle;
 
-
-    DbManager dbManager;
-    //NotesFragment notesFragment = new NotesFragment();
 
 
     @Override
@@ -73,27 +76,13 @@ public class MainActivity extends AppCompatActivity {
         return navController.navigateUp()|| super.onSupportNavigateUp();
     }
 
-
-//    public interface ISelectedBundle{
-//        void onBundleSelect(Bundle bundle);
-//    }
-//
-//    public void setOnBundleSelected(ISelectedBundle selectedBundle){
-//        this.selectedBundle = selectedBundle;
-//    }
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            return false;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

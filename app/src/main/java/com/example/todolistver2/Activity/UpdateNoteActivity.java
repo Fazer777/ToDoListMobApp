@@ -36,6 +36,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
     DbManager dbManager;
     CategoryAdapter categoryAdapter;
     private int noteIndex;
+    Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 if (noteIndex == Constants.INTENT_DEFAULT_VALUE) {
                     throw new Exception("Note's index is below zero");
                 }
-                Note note = (Note) intent.getSerializableExtra(Constants.INTENT_UPDATE_NOTE_KEY);
+                note = (Note) intent.getSerializableExtra(Constants.INTENT_UPDATE_NOTE_KEY);
                 etDescriptionNote.setText(note.getDescription());
                 tvDateTime.setText(Constants.convertLocalDateTimeToString(note.getLocalDateTime()));
                 spCategory.setSelection(categoryAdapter.getItemId(note.getCategory().getName()));
@@ -102,15 +103,12 @@ public class UpdateNoteActivity extends AppCompatActivity {
     }
 
     private void updateNote() {
-
-        Note note = new Note();
+        //Note note = new Note();
         note.setDescription(etDescriptionNote.getText().toString());
         Category category = (Category) spCategory.getSelectedItem();
         note.setCategory(category);
         note.setLocalDateTime(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
-
-        dbManager.updateNoteDatabase(noteIndex + 1, note);
-
+        dbManager.updateNoteDatabase(note.getItemIndex(), note);
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_INDEX_KEY, noteIndex);
         intent.putExtra(Constants.INTENT_UPDATE_NOTE_KEY, note);

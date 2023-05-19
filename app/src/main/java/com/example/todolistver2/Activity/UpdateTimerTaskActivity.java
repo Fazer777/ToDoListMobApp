@@ -78,10 +78,9 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
 
     private void updateTask() {
         selectedTimerTask.setName(etTaskName.getText().toString());
-        selectedTimerTask.setDateTime(LocalDateTime.of(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY), LocalTime.now()));
+        selectedTimerTask.setDate(LocalDate.parse(tvTaskDate.getText().toString(), Constants.format_dd_MM_YYYY));
         selectedTimerTask.setColorTask(timerTaskColor);
-        dbManager.updateTimerTaskDatabase(timerTaskIndex + 1, selectedTimerTask);
-
+        dbManager.updateTimerTaskDatabase(selectedTimerTask.getItemIndex(), selectedTimerTask);
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_INDEX_KEY, timerTaskIndex);
         intent.putExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY, selectedTimerTask);
@@ -100,7 +99,7 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
             selectedTimerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
             etTaskName.setText(selectedTimerTask.getName());
             setBackgroundColorTask(selectedTimerTask.getColorTask());
-            tvTaskDate.setText(selectedTimerTask.getDateTime().format(Constants.format_dd_MM_YYYY));
+            tvTaskDate.setText(selectedTimerTask.getDate().format(Constants.format_dd_MM_YYYY));
         }
     }
 

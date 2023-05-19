@@ -24,6 +24,10 @@ public class Constants {
     public static final String INTENT_CREATE_NOTE_KEY = "CREATE_NOTE";
     public static final String INTENT_CREATE_TIMER_TASK_KEY = "CREATE_TASK";
     public static final String INTENT_UPDATE_TIMER_TASK_KEY = "UPDATE_TASK";
+    public static final String SHARED_PREF_KEY_NOTE = "COUNT_NOTE";
+    public static final String SHARED_PREF_KEY_TIMER= "COUNT_TIMER";
+    public static final String SHARED_PREF_KEY_TASK = "COUNT_TASK";
+
 
     public static String convertLocalDateTimeToString(LocalDateTime localDatetime){
         String dateTimeString="";

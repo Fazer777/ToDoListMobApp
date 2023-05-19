@@ -1,26 +1,20 @@
 package com.example.todolistver2.Models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public class TimerTask implements Serializable {
 
     private String name;
-    private LocalDateTime dateTime;
+    private LocalDate date;
     private int colorTask;
     private LocalTime time;
+    private int itemIndex;
 
     public TimerTask(){
 
-    }
-
-    public TimerTask(String name, LocalDateTime dateTime, int colorTask, LocalTime time) {
-        this.name = name;
-        this.dateTime = dateTime;
-        this.colorTask = colorTask;
-        this.time = time;
     }
 
     public String getName() {
@@ -31,12 +25,12 @@ public class TimerTask implements Serializable {
         this.name = name;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(LocalDate dateTime) {
+        this.date = dateTime;
     }
 
     public int getColorTask() {
@@ -58,6 +52,13 @@ public class TimerTask implements Serializable {
     public void addToTimeTask(long amountMillis){
         long seconds = amountMillis/1000;
         time = time.plus(seconds, ChronoUnit.SECONDS);
-        //time = time.plus(Duration.ofSeconds(amount));
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(int itemIndex) {
+        this.itemIndex = itemIndex;
     }
 }
