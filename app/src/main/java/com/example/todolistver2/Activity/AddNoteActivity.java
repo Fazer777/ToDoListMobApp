@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.todolistver2.Adapters.CategoryAdapter;
+import com.example.todolistver2.Adapters.CategorySpinnerAdapter;
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.Models.Note;
@@ -37,15 +37,15 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
     Spinner spCategory;
 
     DbManager dbManager;
-    CategoryAdapter categoryAdapter;
+    CategorySpinnerAdapter categorySpinnerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        setContentView(R.layout.activity_add_upd_note);
         initLayoutElements();
         dbManager = new DbManager(AddNoteActivity.this);
-        categoryAdapter = new CategoryAdapter(AddNoteActivity.this);
+        categorySpinnerAdapter = new CategorySpinnerAdapter(AddNoteActivity.this, dbManager.getAllCategoriesDatabase());
         setSupportActionBar(toolbar);
         try {
             Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
@@ -57,34 +57,33 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
         tvDateTime.setText(Constants.convertLocalDateTimeToString(
                 LocalDateTime.now(ZoneId.of("Europe/Moscow"))));
 
-
-
-        spCategory.setAdapter(categoryAdapter);
+        spCategory.setAdapter(categorySpinnerAdapter);
+        spCategory.setSelection(categorySpinnerAdapter.getItemId("Без категории"));
     }
 
     private void initLayoutElements() {
-        toolbar = findViewById(R.id.add_note_id_toolbar);
+        toolbar = findViewById(R.id.add_upd_note_id_toolbar);
         etDescriptionNote = findViewById(R.id.add_note_id_description);
-        tvDateTime = findViewById(R.id.add_note_id_date_time_view);
-        spCategory = findViewById(R.id.add_note_id_spinner);
+        tvDateTime = findViewById(R.id.add_upd_note_id_date_time_view);
+        spCategory = findViewById(R.id.add_upd_note_id_spinner);
         etDescriptionNote.addTextChangedListener(this);
     }
 
     private void showHideCreateIcon(boolean show){
-        addNoteMenu.findItem(R.id.menu_add_note_toolbar_create).setVisible(show);
+        addNoteMenu.findItem(R.id.menu_add_upd_note_toolbar_check).setVisible(show);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         addNoteMenu = menu;
-        getMenuInflater().inflate(R.menu.add_note_toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.add_upd_note_toolbar_menu, menu);
         showHideCreateIcon(false);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_note_toolbar_create){
+        if (item.getItemId() == R.id.menu_add_upd_note_toolbar_check){
             createNote();
         }
         return super.onOptionsItemSelected(item);
