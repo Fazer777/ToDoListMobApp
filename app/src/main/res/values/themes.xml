@@ -8,10 +8,11 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/PickledBlueWood</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/big_stone</item>
         <!-- Customize your theme here. -->
+
     </style>
     
     <style name="ShapeableImageView.Round" parent="">
@@ -31,7 +32,7 @@
     </style>
 
     <!-- Кастомная AppTheme.Launcher. Устанавливает в качестве фона вашу drawable -->
-    <style name="Theme.ToDoListVer2.Launcher">
+    <style name="Theme.ToDoListVer2.Launcher" parent="Theme.ToDoListVer2">
         <item name="android:windowBackground">@drawable/launch_screen</item>
         <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
