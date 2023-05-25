@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/selectableItemBackground">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_category_iv_icon"
+        android:layout_height="28dp"
+        android:layout_width="28dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_category_tv_name"
+        android:background="@drawable/ic_category_background"
+        android:foreground="@drawable/ic_category_foreground"
+        android:src="@drawable/ic_category_background"
+        android:contentDescription="@string/icon_category"
+        app:tint="@color/lightGreen"
+        app:shapeAppearanceOverlay="@style/ShapeableImageView.Round"
+        />
+
+    <TextView
+        android:id="@+id/item_category_tv_name"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_category_iv_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        />
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/item_category_img_btn_delete"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_margin="10dp"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@id/item_category_tv_name"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:src="@drawable/ic_close"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        app:tint = "@color/big_stone"-->
+<!--        android:focusable="false" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

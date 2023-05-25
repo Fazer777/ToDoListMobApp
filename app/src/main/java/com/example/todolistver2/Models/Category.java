@@ -8,20 +8,9 @@ import java.util.List;
 
 public class Category implements Serializable {
 
-    public static List<Category> categories = new ArrayList<Category>(){
-        {
-            add(new Category("Без категории", Color.parseColor("#FFFFFF")));// Белый
-            add(new Category("Работа", Color.parseColor("#FFBDB3"))); // Красный
-            add(new Category("Фильмы", Color.parseColor("#C2C8FF"))); // Синий
-            add(new Category("Путешествия", Color.parseColor("#FFE8A8"))); // Желтый
-            add(new Category("Повседневное", Color.parseColor("#CAFFB8"))); // Зеленый
-            add(new Category("Игры", Color.parseColor("#FFD79E")));// Оранженвый
-
-        }};
-
-
     private String name;
     private int color;
+    private int itemIndex;
 
     public Category(){
 
@@ -46,5 +35,13 @@ public class Category implements Serializable {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public void setItemIndex(int itemIndex) {
+        this.itemIndex = itemIndex;
     }
 }

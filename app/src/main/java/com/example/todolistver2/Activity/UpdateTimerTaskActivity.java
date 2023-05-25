@@ -25,11 +25,8 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.jaredrummler.android.colorpicker.ColorShape;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class UpdateTimerTaskActivity  extends AppCompatActivity implements ColorPickerDialogListener {
@@ -52,7 +49,7 @@ public class UpdateTimerTaskActivity  extends AppCompatActivity implements Color
         btnUpdateTask = findViewById(R.id.add_upd_timer_task_btn_add_upd);
         dbManager = new DbManager(UpdateTimerTaskActivity.this);
         calendar =Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Moscow")));
-        btnUpdateTask.setText("Изменить");
+        btnUpdateTask.setText(getResources().getText(R.string.change));
         try {
             getIntentAndSetData();
         }

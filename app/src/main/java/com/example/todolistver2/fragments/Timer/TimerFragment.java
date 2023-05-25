@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.Models.TimerTask;
 import com.example.todolistver2.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -63,16 +65,18 @@ public class TimerFragment extends Fragment {
     int selectedTaskColor;
     TimerTask deletedTimerTask;
     Calendar calendar;
-    Button btnAddTask;
+    FloatingActionButton btnAddTask;
     DbManager dbManager;
     boolean isDatePick = false;
     String selectedDate;
+
+    TextView tv;
+    ImageView imgV;
 
     private final ActivityResultLauncher<Intent> createTimerTask = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Constants.TIMER_TASK_CREATE_ACTION){
-                    Toast.makeText(getActivity(), "Create raise", Toast.LENGTH_SHORT).show();
                     Intent intent = result.getData();
                     if (intent != null ) {
                         TimerTask timerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_CREATE_TIMER_TASK_KEY);
@@ -80,6 +84,7 @@ public class TimerFragment extends Fragment {
                         timerTasks.add(timerTask);
                         recyclerViewTimerAdapter.notifyItemInserted(timerTasks.size()-1);
                         dbManager.addTimerTaskDatabase(timerTask);
+                        setNoData();
                     }
                 }
             }
@@ -89,7 +94,6 @@ public class TimerFragment extends Fragment {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Constants.TIMER_TASK_UPDATE_ACTION){
-                    Toast.makeText(getActivity(), "Update raise", Toast.LENGTH_SHORT).show();
                     Intent intent = result.getData();
                     if (intent != null){
                         TimerTask timerTask = (TimerTask) intent.getSerializableExtra(Constants.INTENT_UPDATE_TIMER_TASK_KEY);
@@ -128,12 +132,15 @@ public class TimerFragment extends Fragment {
         recyclerView = view.findViewById(R.id.timer_id_recycler_view);
         timerCardView = view.findViewById(R.id.timer_id_card_view);
         btnAddTask = view.findViewById(R.id.timer_id_btn_add_task);
+        tv = view.findViewById(R.id.textView);
+        imgV = view.findViewById(R.id.imageView);
         MenuHost menuHost = requireActivity();
 
         recyclerViewTimerAdapter = new RecyclerViewTimerAdapter(context, timerTasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter( recyclerViewTimerAdapter);
+        setNoData();
         tvTimerTaskName.setText(getString(R.string.choose_task_for_timer));
         calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Moscow")));
 
@@ -172,6 +179,7 @@ public class TimerFragment extends Fragment {
                                     Toast.makeText(context, selectedDate, Toast.LENGTH_SHORT).show();
                                     timerTasks = dbManager.getFilteredTimerTasksByDate(selectedDate);
                                     recyclerViewTimerAdapter.setTimerTasks(timerTasks);
+                                    setNoData();
                                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                         datePickerDialog.show();
                         break;
@@ -179,6 +187,7 @@ public class TimerFragment extends Fragment {
                         isDatePick = false;
                         timerTasks = dbManager.getAllTimerTasksDatabase();
                         recyclerViewTimerAdapter.setTimerTasks(timerTasks);
+                        setNoData();
                         break;
                 }
                 return true;
@@ -230,6 +239,7 @@ public class TimerFragment extends Fragment {
                         timerTasks = dbManager.getAllTimerTasksDatabase();
                     }
                     recyclerViewTimerAdapter.setTimerTasks(timerTasks);
+                    setNoData();
                 }
                     break;
             }
@@ -246,7 +256,6 @@ public class TimerFragment extends Fragment {
     };
 
     private void startStopChronometer(int positionTask){
-
         if (!isRunning){
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
@@ -257,8 +266,7 @@ public class TimerFragment extends Fragment {
             timerCardView.setCardBackgroundColor(timerTasks.get(selectedPositionTask).getColorTask());
             timerTasks.get(selectedPositionTask).setColorTask(getResources().getColor(R.color.color_icon_category_default, context.getTheme()));
             recyclerViewTimerAdapter.notifyItemChanged(selectedPositionTask);
-
-
+            Toast.makeText(context, "Таймер запущен", Toast.LENGTH_SHORT).show();
         }
         else {
             if (positionTask == selectedPositionTask){
@@ -272,12 +280,24 @@ public class TimerFragment extends Fragment {
 
                 recyclerViewTimerAdapter.notifyItemChanged(selectedPositionTask);
 
-                timerCardView.setCardBackgroundColor(getResources().getColor(R.color.Pancho ,context.getTheme()));
+                timerCardView.setCardBackgroundColor(getResources().getColor(R.color.Mandy ,context.getTheme()));
                 dbManager.updateTimeTimerTaskDatabase(positionTask,  timerTasks.get(selectedPositionTask).getTime());
 
                 tvTimerTaskName.setText(getString(R.string.choose_task_for_timer));
                 selectedPositionTask = -1;
+                Toast.makeText(context, "Таймер оставновлен", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void setNoData(){
+        if(timerTasks.size()==0){
+            tv.setVisibility(View.VISIBLE);
+            imgV.setVisibility(View.VISIBLE);
+        }
+        else{
+            tv.setVisibility(View.GONE);
+            imgV.setVisibility(View.GONE);
         }
     }
 }

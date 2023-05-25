@@ -26,6 +26,23 @@
     <color name="PaleCopper">#cf8a68</color>
     <color name="Pancho">#eccca4</color>
     <color name="SpicyMix">#8a5056</color>
+    <color name="LightCyanide">#E4F9F5</color>
+    <color name="Еurquoise">#30E3CA</color>
+    <color name="BlueGreenCrayola">#11999E</color>
+    <color name="Space">#40514E</color>
+
+    <color name="MotherOfPearlNight">#112D4E</color>
+    <color name="BlueKlein">#3F72AF</color>
+
+
+
+    <color name="PickledBlueWood">#2d4059</color>
+    <color name="Mandy">#EA5455</color>
+    <color name="Wafer">#decdc3</color>
+    <color name="Mercury">#e5e5e5</color>
+    <color name="SmokyWhite">#F9F7F7</color>
+    <color name="Platinum">#DBE2EF</color>
+    <color name="Grey">#777777</color>
 
 
 </resources>

@@ -3,59 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/SmokyWhite">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/upd_note_id_toolbar"
+        android:id="@+id/add_upd_note_id_toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/upd_note_id_spinner"
+        app:layout_constraintBottom_toTopOf="@id/add_upd_note_id_spinner"
         android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
-        app:menu="@menu/add_note_toolbar_menu"
-        android:background="@color/big_stone"
+        app:menu="@menu/add_upd_note_toolbar_menu"
+        android:background="@color/PickledBlueWood"
         />
     <Spinner
-        android:id="@+id/upd_note_id_spinner"
+        android:id="@+id/add_upd_note_id_spinner"
         android:layout_width="0dp"
         android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/upd_note_id_toolbar"
-        app:layout_constraintEnd_toStartOf="@id/upd_note_id_date_time_view"
+        app:layout_constraintTop_toBottomOf="@id/add_upd_note_id_toolbar"
+        app:layout_constraintEnd_toStartOf="@id/add_upd_note_id_date_time_view"
         android:contentDescription="@string/category_note"
         android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.DropDownItem.Spinner"
-        android:background="@color/color_icon_category_default"
         />
+
     <TextView
-        android:id="@+id/upd_note_id_date_time_view"
+        android:id="@+id/add_upd_note_id_date_time_view"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:textColor="#939393"
-        app:layout_constraintTop_toBottomOf="@id/upd_note_id_toolbar"
-        app:layout_constraintLeft_toRightOf="@id/upd_note_id_spinner"
-        app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
-        android:textSize="14sp"
-        android:background="@color/MauveTaupe"
-        />
-
+        android:text="22.05.2023 14:34:00"
+        android:textColor="@color/big_stone"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toRightOf="@id/add_upd_note_id_spinner"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_upd_note_id_toolbar" />
 
     <EditText
-        android:id="@+id/upd_note_id_description"
+        android:id="@+id/add_note_id_description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/Ebb"
+        android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/add_note"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:padding="5dp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upd_note_id_date_time_view" />
+        app:layout_constraintTop_toBottomOf="@+id/add_upd_note_id_date_time_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

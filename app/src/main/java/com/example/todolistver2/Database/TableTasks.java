@@ -2,25 +2,25 @@ package com.example.todolistver2.Database;
 
 public class TableTasks {
     public static final String TABLE_NAME = "Tasks";
-    public static final String ID = "id";
-    public static final String TASK_NAME = "task_name";
-    public static final String TASK_DESCRIPTION = "task_description";
-    public static final String TASK_DATE = "task_date";
-    public static final String TASK_COMPLETED = "task_completed";
-    public static final String TASK_DATE_COMPLETE = "task_date_complete";
-    public static final String TASK_COLOR = "task_color";
-    public static final String TASK_ITEM_INDEX = "item_index";
+    public static final String ID = "Id";
+    public static final String NAME = "Name";
+    public static final String DESCRIPTION = "Description";
+    public static final String DATE = "Date";
+    public static final String IS_COMPLETED = "IsCompleted";
+    public static final String COMPLETION_DATE = "CompletionDate";
+    public static final String COLOR = "Color";
+    public static final String ITEM_INDEX = "ItemIndex";
 
     public static final String CREATE_TABLE_TASKS =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     ID + " INTEGER PRIMARY KEY," +
-                    TASK_NAME + " TEXT," +
-                    TASK_DESCRIPTION + " TEXT," +
-                    TASK_DATE + " TEXT," +
-                    TASK_COMPLETED + " INTEGER," +
-                    TASK_DATE_COMPLETE + " TEXT," +
-                    TASK_COLOR + " TEXT," +
-                    TASK_ITEM_INDEX + " INTEGER)";
+                    NAME + " TEXT," +
+                    DESCRIPTION + " TEXT," +
+                    DATE + " TEXT," +
+                    IS_COMPLETED + " INTEGER," +
+                    COMPLETION_DATE + " TEXT," +
+                    COLOR + " TEXT," +
+                    ITEM_INDEX + " INTEGER)";
 
     public static final String DELETE_TABLE_TASKS =
             "DROP TABLE IF EXISTS " + TABLE_NAME;

@@ -7,42 +7,46 @@
     android:orientation="vertical"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
-    android:background="@color/Ebb">
+    android:background="@color/Platinum">
 
     <ImageButton
         android:id="@+id/bottom_sheet_btn_close"
         android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textAllCaps="false"
         android:contentDescription="@string/close"
-        android:backgroundTint="@color/big_stone"
+        android:background="@drawable/background_transparent_text_view"
+        android:backgroundTint="@color/chestnut"
         android:src="@drawable/ic_close"
         />
 
     <Button
         android:id="@+id/bottom_sheet_btn_save"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_sheet_editText"
         android:textAllCaps="false"
         android:text="@string/save"
         android:textSize="15sp"
-        android:backgroundTint="@color/Blackcurrant"
-        android:textColor="@color/white"/>
+        android:drawableStart="@drawable/ic_save"
+        android:padding="5dp"
+        android:background="@drawable/background_transparent_text_view"
+        android:backgroundTint="@color/PickledBlueWood"
+        android:textColor="@color/SmokyWhite"/>
 
     <CheckBox
         android:id="@+id/bottom_sheet_checkbox"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="5dp"
-        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_btn_save"
+        android:layout_marginStart="12dp"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_btn_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bottom_sheet_editText"
         app:layout_constraintBottom_toTopOf="@id/bottom_sheet_textViewDate"
@@ -78,7 +82,7 @@
         android:gravity="center_vertical"
         android:padding="11dp"
         android:drawablePadding="25dp"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:clickable="true"
         android:background="?attr/selectableItemBackground"
         android:hint="@string/choose_date"
@@ -95,7 +99,7 @@
         android:gravity="center_vertical"
         android:padding="11dp"
         android:drawablePadding="25dp"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:hint="@string/choose_color"
         android:textColor="@color/black"
         android:clickable="true"
@@ -115,8 +119,9 @@
         android:gravity="top"
         android:padding="12dp"
         android:layout_margin="5dp"
-        android:background="@color/Pancho"
-        android:importantForAutofill="no" />
+        android:backgroundTint="@color/SmokyWhite"
+        android:importantForAutofill="no"
+        android:background="@drawable/background_edit_text"/>
 
 
 
