@@ -3,6 +3,7 @@ package com.example.todolistver2.fragments.Tasks;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -13,20 +14,28 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.todolistver2.Activity.CategoryActivity;
 import com.example.todolistver2.Adapters.RecyclerViewTaskAdapter;
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
@@ -52,9 +61,13 @@ public class TasksFragment extends Fragment{
     RecyclerViewTaskAdapter recyclerViewTaskAdapter;
     FloatingActionButton btnAddTask;
     List<Task> taskList;
-    ConstraintLayout layoutBottomSheet;
-    BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
+//    ConstraintLayout layoutBottomSheet;
+//    BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
     Calendar calendar;
+    TextView tv;
+    ImageView imgV;
+    boolean isDatePick =false;
+    String selectedDate;
     // Bottom sheet layout element
     Button sheetBtnSave;
     ImageButton sheetBtnClose;
@@ -86,21 +99,20 @@ public class TasksFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-
-
+        MenuHost menuHost = requireActivity();
         recyclerViewTaskAdapter = new RecyclerViewTaskAdapter(context, taskList);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerViewTaskAdapter);
+        setNoData();
         calendar = Calendar.getInstance(TimeZone.getTimeZone(ZoneId.of("Europe/Moscow")));
 
         btnAddTask.setOnClickListener(view1 -> {
             BottomSheetDialog  dialog = new BottomSheetDialog(context);
             selectedColor = getResources().getColor(R.color.white, context.getTheme());
-            dialog.setContentView(R.layout.bottom_sheet);
+            dialog.setContentView(R.layout.bottom_sheet_tasks);
             initBottomSheetElements(dialog);
             sheetBtnClose.setOnClickListener(view2 -> dialog.dismiss());
-
 
             sheetBtnSave.setOnClickListener(view2 -> {
                 if (!sheetEtName.getText().toString().matches("") && !sheetTvDate.getText().toString().matches("")){
@@ -109,10 +121,11 @@ public class TasksFragment extends Fragment{
                     taskList.add(task);
                     recyclerViewTaskAdapter.notifyItemInserted(taskList.size() - 1);
                     dbManager.addTaskDatabase(task);
+                    setNoData();
                     dialog.dismiss();
                 }
                 else {
-                    Toast.makeText(context, "Заполните поля: Название и Дата", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getResources().getString(R.string.required_name_date), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -126,7 +139,7 @@ public class TasksFragment extends Fragment{
             @Override
             public void onItemClick(View itemView, int position) {
                 BottomSheetDialog  dialog = new BottomSheetDialog(context);
-                dialog.setContentView(R.layout.bottom_sheet);
+                dialog.setContentView(R.layout.bottom_sheet_tasks);
                 initBottomSheetElements(dialog);
                 getTaskData(position);
 
@@ -141,7 +154,7 @@ public class TasksFragment extends Fragment{
                         dialog.dismiss();
                     }
                     else{
-                        Toast.makeText(context, "Заполните поля: Название и Дата", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getResources().getString(R.string.required_name_date), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -157,22 +170,64 @@ public class TasksFragment extends Fragment{
                 CardView view1 = itemView.findViewById(R.id.item_task_id_card_view);
                 view1.setCardBackgroundColor(getResources().getColor(R.color.teal_700, context.getTheme()));
                 new AlertDialog.Builder(requireActivity())
-                        .setTitle("Do you want to remove this note ?")
-                        .setNegativeButton("Yes", (dialogInterface, i) -> {
+                        .setTitle(getResources().getString(R.string.delete_selected_task))
+                        .setNegativeButton("Да", (dialogInterface, i) -> {
                             taskList.remove(position);
                             recyclerViewTaskAdapter.notifyItemRemoved(position);
                             dbManager.deleteTaskDatabase(task.getItemIndex());
-                            Toast.makeText(context, "Delete!", Toast.LENGTH_SHORT).show();
-                            taskList = dbManager.getAllTasksDatabase();
+                            Toast.makeText(context, "Удалено", Toast.LENGTH_SHORT).show();
+                            if(isDatePick){
+                                taskList = dbManager.getFilteredTasksByDate(selectedDate);
+                            }
+                            else{
+                                taskList = dbManager.getAllTasksDatabase();
+                            }
+                            recyclerViewTaskAdapter.setTaskList(taskList);
+                            setNoData();
                         })
-                        .setPositiveButton("No", (dialogInterface, i) -> {
-                            Toast.makeText(context, "Not delete", Toast.LENGTH_SHORT).show();
-                            view1.setCardBackgroundColor(task.getColor());
+                        .setPositiveButton("Нет", (dialogInterface, i) -> {
+                            Toast.makeText(context, "Удаление отменено", Toast.LENGTH_SHORT).show();
+                            view1.setCardBackgroundColor(Color.WHITE);
                             dialogInterface.dismiss();
                         }).setCancelable(false).create().show();
 
             }
         });
+
+
+        menuHost.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.timer_task_toolbar_menu, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.pickDate:
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                                context, (datePicker, year, month, day) -> {
+                            isDatePick = true;
+                            month = month + 1;
+                            LocalDate date = LocalDate.of(year, month, datePicker.getDayOfMonth());
+                            selectedDate = date.format(Constants.format_dd_MM_YYYY);
+                            Toast.makeText(context, selectedDate, Toast.LENGTH_SHORT).show();
+                            taskList = dbManager.getFilteredTasksByDate(selectedDate);
+                            recyclerViewTaskAdapter.setTaskList(taskList);
+                            setNoData();
+                        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                        datePickerDialog.show();
+                        break;
+                    case R.id.showAll:
+                        isDatePick = false;
+                        taskList = dbManager.getAllTasksDatabase();
+                        recyclerViewTaskAdapter.setTaskList(taskList);
+                        setNoData();
+                        break;
+                }
+                return true;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     private void initBottomSheetElements(BottomSheetDialog dialog) {
@@ -189,7 +244,7 @@ public class TasksFragment extends Fragment{
         sheetEtName.setText(taskList.get(position).getName());
         sheetEtDescription.setText(taskList.get(position).getDescription());
         sheetTvDate.setText(taskList.get(position).getDate().format(Constants.format_dd_MM_YYYY));
-        sheetTvColor.setBackgroundColor(taskList.get(position).getColor());
+        setBackgroundColorTextView(taskList.get(position).getColor());
         selectedColor = taskList.get(position).getColor();
         sheetCbComplete.setChecked(taskList.get(position).getCompleted());
     }
@@ -213,15 +268,11 @@ public class TasksFragment extends Fragment{
             public void onColorSelected(int dialogId, int color) {
                 selectedColor = color;
                 try {
-                    Drawable mDrawable = ContextCompat.getDrawable(context, R.drawable.background_white_text_view);
-                    assert mDrawable != null;
-                    mDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
-                    sheetTvColor.setBackground(mDrawable);
+                    setBackgroundColorTextView(color);
                 }
                 catch (Exception ex){
                     Toast.makeText(context, "Task_drawable: " + ex.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
@@ -236,9 +287,11 @@ public class TasksFragment extends Fragment{
         // Tasks layout elements
         recyclerView = view.findViewById(R.id.tasks_id_recycler_view);
         btnAddTask = view.findViewById(R.id.tasks_id_btn_add);
+        tv = view.findViewById(R.id.textView);
+        imgV = view.findViewById(R.id.imageView);
         // BottomSheet elements
-        layoutBottomSheet = view.findViewById(R.id.bottom_sheet);
-        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+//        layoutBottomSheet = view.findViewById(R.id.bottom_sheet);
+//        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
 
     }
 
@@ -256,5 +309,23 @@ public class TasksFragment extends Fragment{
             task.setDateComplete(null);
         }
         return task;
+    }
+
+    private void setNoData(){
+        if (taskList.size() == 0){
+            tv.setVisibility(View.VISIBLE);
+            imgV.setVisibility(View.VISIBLE);
+        }
+        else{
+            tv.setVisibility(View.GONE);
+            imgV.setVisibility(View.GONE);
+        }
+    }
+
+    private void setBackgroundColorTextView(int color){
+        Drawable mDrawable = ContextCompat.getDrawable(context, R.drawable.background_white_text_view);
+        assert mDrawable != null;
+        mDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        sheetTvColor.setBackground(mDrawable);
     }
 }

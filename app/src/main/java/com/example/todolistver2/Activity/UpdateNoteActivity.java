@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.todolistver2.Adapters.CategoryAdapter;
+import com.example.todolistver2.Adapters.CategorySpinnerAdapter;
 import com.example.todolistver2.Constants.Constants;
 import com.example.todolistver2.Database.DbManager;
 import com.example.todolistver2.Models.Category;
@@ -34,19 +34,19 @@ public class UpdateNoteActivity extends AppCompatActivity {
     TextView tvDateTime;
     Spinner spCategory;
     DbManager dbManager;
-    CategoryAdapter categoryAdapter;
+    CategorySpinnerAdapter categorySpinnerAdapter;
     private int noteIndex;
     Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        setContentView(R.layout.activity_add_upd_note);
         initLayoutElements();
         noteIndex = 0;
         dbManager = new DbManager(UpdateNoteActivity.this);
-        categoryAdapter = new CategoryAdapter(UpdateNoteActivity.this);
-        spCategory.setAdapter(categoryAdapter);
+        categorySpinnerAdapter = new CategorySpinnerAdapter(UpdateNoteActivity.this, dbManager.getAllCategoriesDatabase());
+        spCategory.setAdapter(categorySpinnerAdapter);
         setSupportActionBar(toolbar);
         try {
             Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
@@ -69,7 +69,7 @@ public class UpdateNoteActivity extends AppCompatActivity {
                 note = (Note) intent.getSerializableExtra(Constants.INTENT_UPDATE_NOTE_KEY);
                 etDescriptionNote.setText(note.getDescription());
                 tvDateTime.setText(Constants.convertLocalDateTimeToString(note.getLocalDateTime()));
-                spCategory.setSelection(categoryAdapter.getItemId(note.getCategory().getName()));
+                spCategory.setSelection(categorySpinnerAdapter.getItemId(note.getCategory().getName()));
             }
             catch (Exception ex) {
                 Toast.makeText(UpdateNoteActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -80,30 +80,29 @@ public class UpdateNoteActivity extends AppCompatActivity {
     }
 
     private void initLayoutElements() {
-        toolbar = findViewById(R.id.add_note_id_toolbar);
+        toolbar = findViewById(R.id.add_upd_note_id_toolbar);
         etDescriptionNote = findViewById(R.id.add_note_id_description);
-        tvDateTime = findViewById(R.id.add_note_id_date_time_view);
-        spCategory = findViewById(R.id.add_note_id_spinner);
+        tvDateTime = findViewById(R.id.add_upd_note_id_date_time_view);
+        spCategory = findViewById(R.id.add_upd_note_id_spinner);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         updateNoteMenu = menu;
-        getMenuInflater().inflate(R.menu.add_note_toolbar_menu, menu);
-        updateNoteMenu.findItem(R.id.menu_add_note_toolbar_create).setVisible(true);
+        getMenuInflater().inflate(R.menu.add_upd_note_toolbar_menu, menu);
+        updateNoteMenu.findItem(R.id.menu_add_upd_note_toolbar_check).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_add_note_toolbar_create){
+        if (item.getItemId() == R.id.menu_add_upd_note_toolbar_check){
             updateNote();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void updateNote() {
-        //Note note = new Note();
         note.setDescription(etDescriptionNote.getText().toString());
         Category category = (Category) spCategory.getSelectedItem();
         note.setCategory(category);

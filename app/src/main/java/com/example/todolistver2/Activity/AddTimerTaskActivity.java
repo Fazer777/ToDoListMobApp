@@ -1,5 +1,6 @@
 package com.example.todolistver2.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -26,7 +27,6 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.jaredrummler.android.colorpicker.ColorShape;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class AddTimerTaskActivity extends AppCompatActivity implements ColorPick
         timerTaskColor = getColor(R.color.white);
 
         tvTaskDate.setText(LocalDate.now().format(Constants.format_dd_MM_YYYY));
-        btnAddTimerTask.setText("Добавить");
+        btnAddTimerTask.setText(getResources().getText(R.string.add));
 
         tvTaskColor.setOnClickListener(view -> createColorPickerDialog(R.id.add_upd_timer_task_color));
 
@@ -87,12 +87,14 @@ public class AddTimerTaskActivity extends AppCompatActivity implements ColorPick
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onColorSelected(int dialogId, int color) {
         switch (dialogId){
             case R.id.add_upd_timer_task_color:
                 try {
                     Drawable mDrawable = ContextCompat.getDrawable(AddTimerTaskActivity.this, R.drawable.background_white_text_view);
+                    assert mDrawable != null;
                     mDrawable.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
                     tvTaskColor.setBackground(mDrawable);
                     timerTaskColor = color;

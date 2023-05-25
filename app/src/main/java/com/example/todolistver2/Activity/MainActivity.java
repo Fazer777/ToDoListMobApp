@@ -30,10 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private Toolbar toolbar;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_ToDoListVer2);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initElements();
@@ -51,13 +50,6 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception ex){
             Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        loadDataFromDatabase();
-
-
-    }
-
-    private void loadDataFromDatabase() {
     }
 
     @Override

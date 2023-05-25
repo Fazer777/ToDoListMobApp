@@ -79,35 +79,29 @@ public class RecyclerViewTimerAdapter extends RecyclerView.Adapter<RecyclerViewT
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            cvContainerTimer = itemView.findViewById(R.id.item_timer_task_id_card_view);
+            cvContainerTimer = itemView.findViewById(R.id.item_timer_task_id_cv_color);
             tvTaskName = itemView.findViewById(R.id.item_timer_task_id_task_name);
             tvTaskDate = itemView.findViewById(R.id.item_timer_task_id_task_date);
             tvTaskTime = itemView.findViewById(R.id.item_timer_task_id_task_time);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null){
-                        int position = getLayoutPosition();
-                        if (position !=RecyclerView.NO_POSITION){
-                            listener.onItemClick(itemView, position);
-                        }
+            itemView.setOnClickListener(view -> {
+                if (listener != null){
+                    int position = getLayoutPosition();
+                    if (position !=RecyclerView.NO_POSITION){
+                        listener.onItemClick(itemView, position);
                     }
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (listener != null){
-                        int position = getLayoutPosition();
-                        if (position !=RecyclerView.NO_POSITION){
-                            listener.onItemLongClick(itemView, position);
-                        }
+            itemView.setOnLongClickListener(view -> {
+                if (listener != null){
+                    int position = getLayoutPosition();
+                    if (position !=RecyclerView.NO_POSITION){
+                        listener.onItemLongClick(itemView, position);
                     }
-                    return true;
                 }
+                return true;
             });
 
         }

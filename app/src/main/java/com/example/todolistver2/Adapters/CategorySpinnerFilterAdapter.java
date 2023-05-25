@@ -8,18 +8,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.todolistver2.R;
 import com.example.todolistver2.Models.Category;
+import com.example.todolistver2.R;
 
 import java.util.List;
 import java.util.Objects;
 
-public class CategorySpinnerAdapter extends BaseAdapter {
+public class CategorySpinnerFilterAdapter extends BaseAdapter {
 
     private Context context;
     private List<Category> categoryList;
 
-    public CategorySpinnerAdapter(Context context, List<Category> list){
+    public CategorySpinnerFilterAdapter(Context context, List<Category> list){
         this.context = context;
         categoryList = list;
     }
@@ -55,11 +55,16 @@ public class CategorySpinnerAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void setCategoryList(List<Category> list){
+        categoryList = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
             LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(R.layout.item_category_spinner_adapter, viewGroup, false);
+            view = inflater.inflate(R.layout.item_category_spinner_notes, viewGroup, false);
         }
         ImageView ivIconCategory = (ImageView) view.findViewById(R.id.item_spinner_category_iv_icon);
         TextView tvNameCategory = (TextView) view.findViewById(R.id.item_spinner_category_tv_name);

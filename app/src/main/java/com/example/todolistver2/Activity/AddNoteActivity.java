@@ -35,7 +35,6 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
     EditText etDescriptionNote;
     TextView tvDateTime;
     Spinner spCategory;
-
     DbManager dbManager;
     CategorySpinnerAdapter categorySpinnerAdapter;
 
@@ -89,7 +88,6 @@ public class AddNoteActivity extends AppCompatActivity implements TextWatcher {
         return super.onOptionsItemSelected(item);
     }
 
-    // Метод создания новой заметки
     private void createNote() {
         Note note = new Note();
         note.setDescription(etDescriptionNote.getText().toString());

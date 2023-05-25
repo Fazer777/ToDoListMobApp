@@ -31,6 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(TableNotes.DELETE_TABLE_NOTES);
         db.execSQL(TableTimerTasks.DELETE_TABLE_TIMER_TASKS);
         db.execSQL(TableTasks.DELETE_TABLE_TASKS);
+        db.execSQL(TableCategories.DELETE_TABLE_CATEGORIES);
         onCreate(db);
     }
 }

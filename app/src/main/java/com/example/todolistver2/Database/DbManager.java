@@ -13,7 +13,6 @@ import com.example.todolistver2.Models.Task;
 import com.example.todolistver2.Models.TimerTask;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +28,9 @@ public class DbManager {
 
     //-----------------------------------#TABLE NOTES#----------------------------------------------
 
-    // Addition new note in database
-
     public void addNoteDatabase(Note note){
         if (note != null){
-            String sqlQuery =
-                    "SELECT Id "
+            String sqlQuery = "SELECT Id "
                             + "FROM Categories "
                             + "WHERE Name = ?";
             Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sqlQuery, new String[]{note.getCategory().getName()} );
@@ -51,10 +47,10 @@ public class DbManager {
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableNotes.TABLE_NAME, null, cv);
                 if (result == -1) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Успешно добавлено", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -66,11 +62,10 @@ public class DbManager {
             }
         }
         else{
-            Toast.makeText(context, "Note is null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Update note in database
     public void updateNoteDatabase(int itemIndex, Note note){
         String sqlQuery =
                 "SELECT Id "
@@ -97,10 +92,10 @@ public class DbManager {
                     selectionArgs);
 
             if (count == -1){
-                Toast.makeText(context, "Ошибка обновления", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное изменение", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Успешно обновлено", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно изменено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -111,7 +106,6 @@ public class DbManager {
         }
     }
 
-    // Delete note from database
     public void deleteNoteDatabase(int itemIndex){
         String whereDelClause = TableNotes.ITEM_INDEX + "= ?";
         String[] whereArgs = { String.valueOf(itemIndex) };
@@ -132,8 +126,7 @@ public class DbManager {
 
     public List<Note> getAllNotesDatabase() {
         List<Note> allNotes = new ArrayList<>();
-    String sqlQuery =
-            "SELECT * "
+    String sqlQuery = "SELECT * "
                     + "FROM Notes, Categories "
                     + "WHERE Notes.CategoryId = Categories.Id";
         final String selectAll = "SELECT * FROM Notes";
@@ -156,8 +149,7 @@ public class DbManager {
 
     public List<Note> getFilteredNotesByCategory(String nameCategory){
         List<Note> filteredList = new ArrayList<>();
-        String sqlQuery =
-                "SELECT * "
+        String sqlQuery = "SELECT * "
                         + "FROM Categories "
                         + "WHERE Name = ?";
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sqlQuery, new String[]{nameCategory} );
@@ -193,7 +185,6 @@ public class DbManager {
         cursor1.close();
         dbHelper.close();
         return filteredList;
-
     }
 
     //-----------------------------------#TABLE TIMER#----------------------------------------
@@ -210,10 +201,10 @@ public class DbManager {
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableTimerTasks.TABLE_NAME, null, cv);
                 if (result == -1) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Успешно добавлено", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -225,7 +216,7 @@ public class DbManager {
             }
         }
         else {
-            Toast.makeText(context, "Timer task is null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -247,10 +238,10 @@ public class DbManager {
                     selectionArgs);
 
             if (count == -1){
-                Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное изменение", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно изменено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -265,17 +256,17 @@ public class DbManager {
         ContentValues cv = new ContentValues();
         cv.put(TableTimerTasks.TIME, time.format(Constants.timeFormat_HH_mm_ss));
 
-        String selection = TableNotes.ITEM_INDEX + "= ?";
+        String selection = TableTimerTasks.ITEM_INDEX + "= ?";
         String[] selectionArgs = { String.valueOf(itemIndex) };
 
         try{
             int count = dbHelper.getWritableDatabase().update(TableTimerTasks.TABLE_NAME, cv, selection, selectionArgs );
 
             if (count == -1){
-                Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное изменение", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно изменено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -380,14 +371,13 @@ public class DbManager {
                 cv.put(TableTasks.COMPLETION_DATE, task.getDateComplete().format(Constants.format_dd_MM_YYYY));
             }
 
-
             try{
                 long result = dbHelper.getWritableDatabase().insert(TableTasks.TABLE_NAME, null, cv);
                 if (result == -1) {
-                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Успешно добавлено", Toast.LENGTH_SHORT).show();
                 }
             }
             catch (Exception ex){
@@ -398,7 +388,7 @@ public class DbManager {
             }
         }
         else{
-            Toast.makeText(context, "task is null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -426,10 +416,10 @@ public class DbManager {
                     selectionArgs);
 
             if (count == -1){
-                Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное изменение", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно изменено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -491,6 +481,42 @@ public class DbManager {
         return  allTasks;
     }
 
+    public List<Task> getFilteredTasksByDate(String date){
+        List<Task> filteredTasks = new ArrayList<>();
+
+        String selection = TableTasks.DATE + " = ?";
+        String[] selectionArgs = { date };
+        Cursor cursor = dbHelper.getReadableDatabase().query(
+                TableTasks.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        while(cursor.moveToNext()){
+            Task task = new Task();
+            task.setName(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.NAME)));
+            task.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.DESCRIPTION)));
+            task.setDate(LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.DATE)), Constants.format_dd_MM_YYYY));
+            task.setColor(Color.parseColor(cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.COLOR))));
+            int i = cursor.getInt(cursor.getColumnIndexOrThrow(TableTasks.IS_COMPLETED));
+            task.setCompleted(intToBoolean(i));
+            task.setItemIndex(cursor.getInt(cursor.getColumnIndexOrThrow(TableTasks.ITEM_INDEX)));
+            String strDate = cursor.getString(cursor.getColumnIndexOrThrow(TableTasks.COMPLETION_DATE));
+            if (strDate != null){
+                task.setDateComplete(LocalDate.parse(strDate, Constants.format_dd_MM_YYYY));
+            }
+            filteredTasks.add(task);
+        }
+
+        cursor.close();
+        dbHelper.close();
+        return filteredTasks;
+    }
+
     //----------------------------------#TABLE CATEGORIES#------------------------------------------
 
     public void addCategoryDatabase(Category category){
@@ -502,10 +528,10 @@ public class DbManager {
         try{
             long result = dbHelper.getWritableDatabase().insert(TableCategories.TABLE_NAME, null, cv);
             if (result == -1) {
-                Toast.makeText(context, "Ошибка добавления категории", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное добавление", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Категория добавлена", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно добавлено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -533,10 +559,10 @@ public class DbManager {
                     selectionArgs);
 
             if (count == -1){
-                Toast.makeText(context, "Update Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Неудачное изменение", Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Успешно изменено", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception ex){
@@ -579,7 +605,6 @@ public class DbManager {
         }
     }
 
-
     public List<Category> getAllCategoriesDatabase() {
         List<Category> allCategories = new ArrayList<>();
         Cursor cursor = dbHelper.getReadableDatabase().query(
@@ -603,7 +628,7 @@ public class DbManager {
         return allCategories;
     }
 
-    // Other functions
+    //----------------------------------#OTHER FUNCTIONS#------------------------------------------
 
     private Boolean intToBoolean(int num){
         return num > 0;

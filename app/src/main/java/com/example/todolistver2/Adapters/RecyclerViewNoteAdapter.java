@@ -27,7 +27,6 @@ public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNo
         this.notes = notes;
     }
 
-
     @NonNull
     @Override
     public RecyclerViewNoteAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,32 +58,29 @@ public class RecyclerViewNoteAdapter extends RecyclerView.Adapter<RecyclerViewNo
             cardView = itemView.findViewById(R.id.item_note_card_view);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(itemView, position);
-                        }
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(itemView, position);
                     }
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (listener != null){
-                        //itemView.setSelected(!itemView.isSelected());
-                        int position = getAdapterPosition();
-                        if (position !=RecyclerView.NO_POSITION){
-                            listener.onItemLongClick(itemView, position);
-                        }
+            itemView.setOnLongClickListener(view -> {
+                if (listener != null){
+                    int position = getAdapterPosition();
+                    if (position !=RecyclerView.NO_POSITION){
+                        listener.onItemLongClick(itemView, position);
                     }
-                    return true;
                 }
+                return true;
             });
         }
+    }
+    public void setNotes(List<Note> noteList){
+        notes = noteList;
+        notifyDataSetChanged();
     }
 
     public interface IOnItemClickListener{

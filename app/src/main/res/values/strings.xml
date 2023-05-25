@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">ToDoList</string>
+    <string name="app_name">Task Planner</string>
     <string name="category_note">Категории заметок</string>
     <string name="input_name">Введите наименование</string>
     <string name="choose_color">Выбрать цвет</string>
     <string name="choose_date">Выбрать дату</string>
     <string name="add">Добавить</string>
+    <string name="change">Изменить</string>
     <string name="close">Закрыть</string>
     <string name="save">Сохранить</string>
     <string name="add_note">Добавить заметку</string>
@@ -13,4 +14,14 @@
     <string name="icon_category">Категория</string>
     <string name="choose_task_for_timer">Выберите задачу для запуска таймера</string>
     <string name="stop_timer">Остановите таймер перед удалением задачи</string>
+    <string name="unchangeable_category">Данную категорию нельзя изменить</string>
+    <string name="required_name">Необходимо заполнить поля: Наименование</string>
+    <string name="required_name_date">Необходимо заполнить поля: Название и Дата</string>
+    <string name="unremovable_category">Данную категорию нельзя удалить</string>
+    <string name="category_exists">Категория с таким названием уже существует</string>
+    <string name="category_all">Все</string>
+    <string name="delete_selected_note">Удалить выбранную заметку?</string>
+    <string name="delete_selected_task">Удалить выбранную задачу?</string>
+    <string name="deleted_note">Заметка удалена</string>
+    <string name="cancel_removing">Удаление отменено</string>
 </resources>

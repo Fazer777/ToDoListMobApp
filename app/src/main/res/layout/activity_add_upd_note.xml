@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/SmokyWhite">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/add_upd_note_id_toolbar"
@@ -14,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@id/add_upd_note_id_spinner"
         android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
         app:menu="@menu/add_upd_note_toolbar_menu"
-        android:background="@color/BlueKlein"
+        android:background="@color/PickledBlueWood"
         />
     <Spinner
         android:id="@+id/add_upd_note_id_spinner"
@@ -27,14 +28,12 @@
         android:contentDescription="@string/category_note"
         android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.DropDownItem.Spinner"
-        android:background="@color/SmokyWhite"
         />
 
     <TextView
         android:id="@+id/add_upd_note_id_date_time_view"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:background="@color/SmokyWhite"
         android:gravity="center"
         android:text="22.05.2023 14:34:00"
         android:textColor="@color/big_stone"
@@ -47,12 +46,12 @@
         android:id="@+id/add_note_id_description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/SmokyWhite"
+        android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/add_note"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:padding="5dp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
