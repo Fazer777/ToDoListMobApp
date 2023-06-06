@@ -22,6 +22,7 @@
     <string name="category_all">Все</string>
     <string name="delete_selected_note">Удалить выбранную заметку?</string>
     <string name="delete_selected_task">Удалить выбранную задачу?</string>
-    <string name="deleted_note">Заметка удалена</string>
+    <string name="delete_selected_category">Удалить выбранную категорию?</string>
+    <string name="deleted">Удалено</string>
     <string name="cancel_removing">Удаление отменено</string>
 </resources>

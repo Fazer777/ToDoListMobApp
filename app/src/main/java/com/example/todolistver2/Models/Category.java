@@ -1,10 +1,5 @@
 package com.example.todolistver2.Models;
-
-import android.graphics.Color;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Category implements Serializable {
 

@@ -30,12 +30,12 @@
             <TextView
                 android:id="@+id/item_task_id_task_name"
                 android:layout_width="0dp"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/item_task_id_cv_color"
                 app:layout_constraintBottom_toTopOf="@id/item_task_id_task_date"
-                android:text="Timertasknamesdfsdfsfsdfsdfsdfdfssdfsdfsdf"
+                android:text="Timergtasknamesdfsdfsfsdfsdfsdfdfssdfsdfsdfsdfasdfaskl;djflaskdjf"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 />

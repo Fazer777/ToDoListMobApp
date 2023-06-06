@@ -175,7 +175,8 @@ public class TasksFragment extends Fragment{
                             taskList.remove(position);
                             recyclerViewTaskAdapter.notifyItemRemoved(position);
                             dbManager.deleteTaskDatabase(task.getItemIndex());
-                            Toast.makeText(context, "Удалено", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                            view1.setCardBackgroundColor(Color.WHITE);
                             if(isDatePick){
                                 taskList = dbManager.getFilteredTasksByDate(selectedDate);
                             }
@@ -186,11 +187,10 @@ public class TasksFragment extends Fragment{
                             setNoData();
                         })
                         .setPositiveButton("Нет", (dialogInterface, i) -> {
-                            Toast.makeText(context, "Удаление отменено", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getResources().getString(R.string.cancel_removing), Toast.LENGTH_SHORT).show();
                             view1.setCardBackgroundColor(Color.WHITE);
                             dialogInterface.dismiss();
                         }).setCancelable(false).create().show();
-
             }
         });
 

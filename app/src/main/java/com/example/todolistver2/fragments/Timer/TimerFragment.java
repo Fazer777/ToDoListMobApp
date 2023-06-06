@@ -231,7 +231,7 @@ public class TimerFragment extends Fragment {
                     timerTasks.remove(position);
                     recyclerViewTimerAdapter.notifyItemRemoved(position);
                     dbManager.deleteTimerTaskDatabase(deletedTimerTask.getItemIndex());
-
+                    Toast.makeText(context, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                     if(isDatePick){
                         timerTasks = dbManager.getFilteredTimerTasksByDate(selectedDate);
                     }

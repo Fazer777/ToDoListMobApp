@@ -1,5 +1,4 @@
 package com.example.todolistver2.fragments.Notes;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +45,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class NotesFragment extends Fragment {
     FloatingActionButton buttonAddNote;
@@ -162,7 +160,7 @@ public class NotesFragment extends Fragment {
                             notes.remove(position);
                             recyclerViewAdapter.notifyItemRemoved(position);
                             dbManager.deleteNoteDatabase(note.getItemIndex());
-                            Toast.makeText(context, getResources().getString(R.string.deleted_note), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
 
                             if (selected.getName().equals(getResources().getString(R.string.category_all))){
                                 notes = dbManager.getAllNotesDatabase();

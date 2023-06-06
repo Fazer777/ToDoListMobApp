@@ -106,19 +106,19 @@ public class CategoryActivity extends AppCompatActivity {
             Category category = categoryList.get( position);
             view.setBackgroundColor(getResources().getColor(R.color.teal_700, getTheme()));
             new AlertDialog.Builder(CategoryActivity.this)
-                    .setTitle("Do you want to remove this note ?")
-                    .setNegativeButton("Yes", (dialogInterface, i1) -> {
+                    .setTitle(getResources().getString(R.string.delete_selected_category))
+                    .setNegativeButton("Да", (dialogInterface, i1) -> {
                         categoryList.remove(position);
                         categoryAdapter.notifyDataSetChanged();
                         dbManager.deleteCategoryDatabase(category.getItemIndex());
-                        view.setBackgroundColor(-1);
-                        Toast.makeText(CategoryActivity.this, "Delete!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CategoryActivity.this, getResources().getString(R.string.deleted), Toast.LENGTH_SHORT).show();
+                        view.setBackgroundColor(getResources().getColor(R.color.Platinum, getTheme()));
                         categoryList = dbManager.getAllCategoriesDatabase();
                         categoryAdapter.setCategoryList(categoryList);
                     })
-                    .setPositiveButton("No", (dialogInterface, i1) -> {
-                        Toast.makeText(CategoryActivity.this, "Not delete", Toast.LENGTH_SHORT).show();
-                        view.setBackgroundColor(-1);
+                    .setPositiveButton("Нет", (dialogInterface, i1) -> {
+                        Toast.makeText(CategoryActivity.this, getResources().getString(R.string.cancel_removing), Toast.LENGTH_SHORT).show();
+                        view.setBackgroundColor(getResources().getColor(R.color.Platinum, getTheme()));
                         dialogInterface.dismiss();
                     }).setCancelable(false).create().show();
 

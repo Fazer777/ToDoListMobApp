@@ -1,5 +1,4 @@
 package com.example.todolistver2.Models;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
