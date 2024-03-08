@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lightBlue">#9EB5EF</color>
+    <color name="lightGreen">#57F09C</color>
+    <color name="lightYellow">#F6FF9F</color>
+    <color name="lightPink">#FDDBFC</color>
+    <color name="blue">#0083C2</color>
+    <color name="orange">#FFDA69</color>
+    <color name="big_stone">#14223e</color>
+    <color name="chestnut">#cd5768</color>
+    <color name="purple_taupe">#573d4a</color>
+    <color name="shiraz">#ba092a</color>
+    <color name="pictorial_carmine">#c00b3d</color>
+    <color name="red">#FF8282</color>
+    <color name="color_icon_category_default">#C2C2C2</color>
+    <color name="Ebb">#e9e7e6</color>
+    <color name="Blackcurrant">#36283c</color>
+    <color name="MauveTaupe">#8c616b</color>
+    <color name="PaleCopper">#cf8a68</color>
+    <color name="Pancho">#eccca4</color>
+    <color name="SpicyMix">#8a5056</color>
+    <color name="LightCyanide">#E4F9F5</color>
+    <color name="Еurquoise">#30E3CA</color>
+    <color name="BlueGreenCrayola">#11999E</color>
+    <color name="Space">#40514E</color>
+
+    <color name="MotherOfPearlNight">#112D4E</color>
+    <color name="BlueKlein">#3F72AF</color>
+
+
+
+    <color name="PickledBlueWood">#2d4059</color>
+    <color name="Mandy">#EA5455</color>
+    <color name="Wafer">#decdc3</color>
+    <color name="Mercury">#e5e5e5</color>
+    <color name="SmokyWhite">#F9F7F7</color>
+    <color name="Platinum">#DBE2EF</color>
+    <color name="Grey">#777777</color>
+
+
+</resources>
